@@ -3,26 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portafolio - Jafet Antony Anaya Estrada</title>
+    <title>Portafolio - Jafet Anaya Estrada</title>
 
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             margin: 0;
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: #333;
-            text-align: center;
         }
 
         header {
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.75);
             color: white;
-            padding: 30px;
+            padding: 40px 20px;
+            text-align: center;
         }
 
         header h1 {
             margin: 0;
-            font-size: 2.5em;
+            font-size: 2.8em;
         }
 
         header p {
@@ -31,39 +31,56 @@
             color: #ccc;
         }
 
+        .container {
+            width: 85%;
+            max-width: 900px;
+            margin: 40px auto;
+        }
+
         section {
             background: white;
-            margin: 40px auto;
             padding: 30px;
-            width: 80%;
-            max-width: 800px;
+            margin-bottom: 30px;
             border-radius: 15px;
-            box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+
+        section:hover {
+            transform: translateY(-5px);
         }
 
         h2 {
             color: #764ba2;
+            margin-bottom: 15px;
+        }
+
+        .info {
+            font-size: 1.1em;
+            line-height: 1.6;
         }
 
         .links a {
             display: block;
             margin: 10px 0;
-            padding: 12px;
-            background: #667eea;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea, #5a67d8);
             color: white;
             text-decoration: none;
-            border-radius: 8px;
-            transition: 0.3s;
+            border-radius: 10px;
+            transition: all 0.3s;
+            font-weight: bold;
         }
 
         .links a:hover {
-            background: #5a67d8;
+            background: linear-gradient(135deg, #5a67d8, #434190);
+            transform: scale(1.03);
         }
 
         footer {
-            margin-top: 30px;
-            padding: 15px;
-            background: rgba(0,0,0,0.7);
+            text-align: center;
+            padding: 20px;
+            background: rgba(0,0,0,0.75);
             color: white;
         }
     </style>
@@ -73,31 +90,37 @@
 
 <header>
     <h1>Jafet Anaya Estrada</h1>
-    <p>Estudiante de Ingeniería de Sistemas | Computacion Grafica</p>
+    <p>Estudiante de Ingeniería de Sistemas</p>
+    <p>Universidad Tecnológica de los Andes - UTEA Cusco</p>
 </header>
 
-<section>
-    <h2>Sobre mí</h2>
-    <p>
-        Bienvenido a mi página web. Aquí encontrarás algunos de los proyectos que he desarrollado 
-        como parte de mi formación académica.
-    </p>
-</section>
+<div class="container">
 
-<section>
-    <h2>Mis Proyectos</h2>
+    <section>
+        <h2>Sobre mí</h2>
+        <p class="info">
+            Soy estudiante de Ingeniería de Sistemas en la UTEA Cusco, con interés en el desarrollo web, 
+            la programación y la computación gráfica. Me encuentro en constante aprendizaje desarrollando 
+            proyectos prácticos que fortalecen mis habilidades técnicas.
+        </p>
+    </section>
 
-    <div class="links">
-        <a href="CIRCULO.HTML">Proyecto Círculo</a>
-        <a href="CUADRADOTRIANGULO.HTML">Proyecto Cuadrado y Triángulo</a>
-        <a href="graficobarras.html">Gráfico de Barras</a>
-        <a href="Ejercicio_4FuncionMatematica.html">Funcion Matematica</a>
-        <a href="Ejercicio_5GraficoLineal.html">Gráfico Lineal</a>
-    </div>
-</section>
+    <section>
+        <h2>Proyectos Académicos</h2>
+
+        <div class="links">
+            <a href="CIRCULO.HTML">🔵 Proyecto Círculo</a>
+            <a href="CUADRADOTRIANGULO.HTML">🔺 Cuadrado y Triángulo</a>
+            <a href="graficobarras.html">📊 Gráfico de Barras</a>
+            <a href="Ejercicio_4FuncionMatematica.html">📈 Función Matemática</a>
+            <a href="Ejercicio_5GraficoLineal.html">📉 Gráfico Lineal</a>
+        </div>
+    </section>
+
+</div>
 
 <footer>
-    <p>© 2026 - Jafet Anaya Estrada</p>
+    <p>© 2026 - Jafet Anaya Estrada | UTEA Cusco</p>
 </footer>
 
 </body>
