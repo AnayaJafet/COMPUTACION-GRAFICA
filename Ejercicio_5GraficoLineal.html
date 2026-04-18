@@ -54,14 +54,14 @@ ctx.strokeStyle= '#006400';
 ctx.lineWidth = 2; // grosor de la línea
 //dibuja la funcion  Y = sin(x)
 for (var x = xstart; x < xend; x += step) {
-var y = Math.sin(x*0.01+time); // función para crear una onda sinusoidal con el tiempo para animar
+var y = Math.sin(x*0.10+time); // función para crear una onda sinusoidal con el tiempo para animar
 
 if (x === xstart) {
-ctx.moveTo(x,canvas.height/2 -y*100); // posiciona el el punto de inicio en el eje x y el centro del canvas en el eje y
+ctx.moveTo(x,canvas.height/3 -y*100); // posiciona el el punto de inicio en el eje x y el centro del canvas en el eje y
  } 
 
 else {
- ctx.lineTo(x,canvas.height/2-y*100); // dibujar la línea
+ ctx.lineTo(x,canvas.height/3-y*100); // dibujar la línea
  }
 }
  // dibuja la línea en el canvas
