@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 2 Separado - Jafet Anaya</title>
+</head>
+<body>
+    <h2>Ejercicio 2: Figuras cuadrado y triangulo</h2>
+    <h2>Jafet Antony Anaya Estrada</h2>
+    <canvas id="canvas2" width="500" height="500" style="border:1px solid #000;"></canvas>
+
+    <script>
+        var canvas = document.getElementById("canvas2");
+        var ctx = canvas.getContext("2d");
+
+        // --- 1. CUADRADO (PARTE SUPERIOR) ---
+        ctx.fillStyle = "blue";
+        ctx.fillRect(200, 50, 100, 100); 
+        ctx.strokeRect(200, 50, 100, 100);
+
+        // --- 2. LÍNEA DIVISORIA CENTRAL ---
+        ctx.beginPath();
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 2;
+        ctx.moveTo(50, 250);  // Inicio de la línea (X, Y)
+        ctx.lineTo(450, 250); // Fin de la línea (X, Y)
+        ctx.stroke();
+
+        // --- 3. TRIÁNGULO (PARTE INFERIOR) ---
+        ctx.beginPath();
+        ctx.moveTo(200, 450); // Esquina inferior izquierda
+        ctx.lineTo(300, 450); // Esquina inferior derecha
+        ctx.lineTo(250, 300); // Punta superior (debajo de la línea)
+        ctx.closePath();
+        
+        ctx.fillStyle = "orange";
+        ctx.fill();
+        ctx.stroke();
+    </script>
+</body>
+</html>
