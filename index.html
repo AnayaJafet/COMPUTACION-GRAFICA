@@ -3,58 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Página Web</title>
+    <title>Portafolio - Jafet Anaya Estrada</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            background: #f4f4f4;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #333;
             text-align: center;
         }
+
         header {
-            background: #24292e;
+            background: rgba(0,0,0,0.7);
             color: white;
-            padding: 20px;
+            padding: 30px;
         }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        header p {
+            margin-top: 10px;
+            font-size: 1.2em;
+            color: #ccc;
+        }
+
         section {
-            padding: 40px;
+            background: white;
+            margin: 40px auto;
+            padding: 30px;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 15px;
+            box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
         }
-        footer {
-            background: #24292e;
+
+        h2 {
+            color: #764ba2;
+        }
+
+        .links a {
+            display: block;
+            margin: 10px 0;
+            padding: 12px;
+            background: #667eea;
             color: white;
-            padding: 10px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-        a {
-            color: #0366d6;
             text-decoration: none;
-            font-weight: bold;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .links a:hover {
+            background: #5a67d8;
+        }
+
+        footer {
+            margin-top: 30px;
+            padding: 15px;
+            background: rgba(0,0,0,0.7);
+            color: white;
         }
     </style>
 </head>
+
 <body>
 
 <header>
-    <h1>Bienvenido a mi página</h1>
-    <p>Proyecto publicado en GitHub Pages</p>
+    <h1>Jafet Anaya Estrada</h1>
+    <p>Estudiante de Ingeniería de Sistemas | Proyectos Web</p>
 </header>
 
 <section>
     <h2>Sobre mí</h2>
-    <p>Aquí puedes colocar la información de tu proyecto o tarea.</p>
-
-    <h2>Enlaces</h2>
     <p>
-        <a href="CIRCULO.HTML">Mi proyecto</a>
-        <br> href="graficobarras">Mi proyecto</br>
-        <br> href="graficobarras">Mi proyecto</br>
+        Bienvenido a mi página web. Aquí encontrarás algunos de los proyectos que he desarrollado 
+        como parte de mi formación académica.
     </p>
 </section>
 
+<section>
+    <h2>Mis Proyectos</h2>
+
+    <div class="links">
+        <a href="CIRCULO.HTML">Proyecto Círculo</a>
+        <a href="CUADRADOTRIANGULO.HTML">Proyecto Cuadrado y Triángulo</a>
+        <a href="graficobarras.html">Gráfico de Barras</a>
+    </div>
+</section>
+
 <footer>
-    <p>© 2026 - Mi Página Web</p>
+    <p>© 2026 - Jafet Anaya Estrada</p>
 </footer>
 
 </body>
