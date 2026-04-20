@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 2 - Jafet Anaya</title>
+    <style>
+        body { text-align: center; background: #1e293b; color: white; font-family: sans-serif; }
+        canvas { background: white; border-radius: 8px; box-shadow: 0 0 20px rgba(0,0,0,0.5); margin-top: 20px; }
+        .info { color: #94a3b8; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <h2>Puntos en Movimiento</h2>
+    <div class="info">Realizado por Jafet Antony Anaya Estrada</div>
+    <canvas id="canvasPuntos" width="500" height="500"></canvas>
+
+    <script>
+        const canvas = document.getElementById("canvasPuntos");
+        const ctx = canvas.getContext("2d");
+
+        // Crear 6 puntos con colores diferentes
+        const puntos = [];
+        const colores = ['#ef4444', '#22c55e', '#3b82f6', '#eab308', '#a855f7', '#f97316'];
+
+        for(let i=0; i<6; i++) {
+            puntos.push({ color: colores[i] });
+        }
+
+        function dibujar() {
+            // Requisito: Usar clearRect para limpiar el lienzo
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Dibujar fondo de rejilla (opcional, para que se vea bonito)
+            ctx.strokeStyle = "#f1f5f9";
+            for(let i=0; i<500; i+=50){
+                ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,500); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(500,i); ctx.stroke();
+            }
+
+            puntos.forEach((p, index) => {
+                // Requisito: Actualizar coordenadas cada segundo
+                p.x = Math.random() * 400 + 50;
+                p.y = Math.random() * 400 + 50;
+
+                // Dibujar el punto
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 12, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+                
+                // Mostrar coordenadas
+                ctx.fillStyle = "#334155";
+                ctx.font = "bold 12px Arial";
+                ctx.fillText(`P${index+1}(${Math.round(p.x)},${Math.round(p.y)})`, p.x + 15, p.y - 15);
+            });
+        }
+
+        setInterval(dibujar, 1000);
+        dibujar();
+    </script>
+</body>
+</html>

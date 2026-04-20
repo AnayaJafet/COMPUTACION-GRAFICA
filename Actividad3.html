@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 3 - Jafet Anaya</title>
+    <style>
+        body { text-align: center; font-family: 'Courier New', monospace; background: #f8fafc; }
+        h2 { color: #0f172a; }
+        canvas { background: #ffffff; border: 2px solid #0f172a; border-radius: 4px; }
+        .autor { font-weight: bold; color: #334155; }
+    </style>
+</head>
+<body>
+
+    <h2>Función Matemática y = cos(x)</h2>
+    <p class="autor">Realizado por Jafet Antony Anaya Estrada</p>
+    <canvas id="canvasCoseno" width="600" height="400"></canvas>
+
+    <script>
+        const canvas = document.getElementById("canvasCoseno");
+        const ctx = canvas.getContext("2d");
+        let desplazamiento = 0;
+
+        function graficarCoseno() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Dibujar Eje X y Eje Y
+            ctx.strokeStyle = "#cbd5e1";
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(0, 200); ctx.lineTo(600, 200); ctx.stroke(); // Eje X
+            ctx.beginPath(); ctx.moveTo(300, 0); ctx.lineTo(300, 400); ctx.stroke(); // Eje Y
+
+            // Dibujar la curva
+            ctx.beginPath();
+            ctx.strokeStyle = "#10b981"; // Color verde esmeralda
+            ctx.lineWidth = 3;
+
+            for (let x = 0; x <= 600; x++) {
+                // Requisito: Calcular puntos de la función coseno
+                // y = cos(x) -> Aplicamos escala para que sea visible
+                let angulo = (x + desplazamiento) * 0.05;
+                let yVal = Math.cos(angulo) * 100; // Amplitud de 100px
+
+                let canvasY = 200 - yVal;
+
+                if (x === 0) ctx.moveTo(x, canvasY);
+                else ctx.lineTo(x, canvasY);
+            }
+            
+            ctx.stroke();
+
+            // Requisito: Mostrar movimiento cambiando la variable
+            desplazamiento += 20; 
+        }
+
+        // Requisito: Actualizar cada segundo
+        setInterval(graficarCoseno, 1000);
+        graficarCoseno();
+    </script>
+</body>
+</html>
