@@ -6,82 +6,127 @@
     <title>Portafolio - Jafet Anaya Estrada</title>
 
     <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --header-bg: rgba(15, 23, 42, 0.9);
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --btn-hover: linear-gradient(135deg, #764ba2, #667eea);
+        }
+
         body {
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             margin: 0;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: #333;
+            background: var(--primary-gradient);
+            background-attachment: fixed;
+            color: var(--text-main);
+            line-height: 1.6;
         }
 
         header {
-            background: rgba(0,0,0,0.75);
+            background: var(--header-bg);
             color: white;
-            padding: 40px 20px;
+            padding: 60px 20px;
             text-align: center;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         header h1 {
             margin: 0;
-            font-size: 2.8em;
+            font-size: 3rem;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #fff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         header p {
-            margin-top: 10px;
-            font-size: 1.2em;
-            color: #ccc;
+            margin: 10px 0 0;
+            font-size: 1.2rem;
+            opacity: 0.8;
+            font-weight: 300;
         }
 
         .container {
-            width: 85%;
+            width: 90%;
             max-width: 900px;
-            margin: 40px auto;
+            margin: -30px auto 40px; /* Sube un poco para entrar en el header */
         }
 
         section {
-            background: white;
-            padding: 30px;
+            background: var(--card-bg);
+            padding: 35px;
             margin-bottom: 30px;
-            border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-            transition: transform 0.3s;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
         }
 
         section:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.25);
         }
 
         h2 {
-            color: #764ba2;
-            margin-bottom: 15px;
+            color: #4338ca;
+            margin-top: 0;
+            border-left: 5px solid #764ba2;
+            padding-left: 15px;
+            font-size: 1.5rem;
         }
 
         .info {
-            font-size: 1.1em;
-            line-height: 1.6;
+            color: #475569;
+            font-size: 1.1rem;
+        }
+
+        .links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
         }
 
         .links a {
-            display: block;
-            margin: 10px 0;
-            padding: 14px;
-            background: linear-gradient(135deg, #667eea, #5a67d8);
-            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            background: #f8fafc;
+            color: #4338ca;
             text-decoration: none;
-            border-radius: 10px;
-            transition: all 0.3s;
-            font-weight: bold;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.2s ease;
+            font-weight: 600;
+            text-align: center;
         }
 
         .links a:hover {
-            background: linear-gradient(135deg, #5a67d8, #434190);
-            transform: scale(1.03);
+            background: var(--primary-gradient);
+            color: white;
+            border-color: transparent;
+            transform: scale(1.02);
+            box-shadow: 0 10px 15px rgba(118, 75, 162, 0.3);
         }
 
         footer {
             text-align: center;
-            padding: 20px;
-            background: rgba(0,0,0,0.75);
-            color: white;
+            padding: 30px;
+            background: var(--header-bg);
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+        }
+
+        /* Animación de entrada */
+        section {
+            animation: slideUp 0.6s ease-out forwards;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -91,7 +136,7 @@
 <header>
     <h1>Jafet Anaya Estrada</h1>
     <p>Estudiante de Ingeniería de Sistemas</p>
-    <p>Universidad Tecnológica de los Andes - UTEA Cusco</p>
+    <p style="font-size: 0.9em;">Universidad Tecnológica de los Andes - UTEA Cusco</p>
 </header>
 
 <div class="container">
@@ -99,7 +144,7 @@
     <section>
         <h2>Sobre mí</h2>
         <p class="info">
-            Soy estudiante de Ingeniería de Sistemas en la UTEA Cusco, con interés en el desarrollo web, 
+            Soy estudiante de Ingeniería de Sistemas en la <strong>UTEA Cusco</strong>, con interés en el desarrollo web, 
             la programación y la computación gráfica. Me encuentro en constante aprendizaje desarrollando 
             proyectos prácticos que fortalecen mis habilidades técnicas.
         </p>
@@ -107,7 +152,6 @@
 
     <section>
         <h2>Proyectos Académicos</h2>
-
         <div class="links">
             <a href="CIRCULO.HTML">🔵 Proyecto Círculo</a>
             <a href="CUADRADOTRIANGULO.HTML">🔺 Cuadrado y Triángulo</a>
@@ -116,14 +160,13 @@
             <a href="Ejercicio_5GraficoLineal.html">📉 Gráfico Lineal</a>
         </div>
     </section>
-    <section>
-        <h2>Actividades</h2>
 
+    <section>
+        <h2>Actividades Dinámicas</h2>
         <div class="links">
-            <a href="Actividad1.hmtl">Ejercicio1:Gráfico de Barras Dinámico</a>
-            <a href="Actividad2.hmtl">Ejercicio2:Gráfico de Puntos en Movimiento</a>
-            <a href="Actividad3.hmtl">Ejercicio3:Curva Dinámica de la Función Coseno</a>
-          
+            <a href="Actividad1.html">⚡ Ejercicio 1: Barras Dinámicas</a>
+            <a href="Actividad2.html">📍 Ejercicio 2: Puntos en Movimiento</a>
+            <a href="Actividad3.html">🌊 Ejercicio 3: Curva Coseno</a>
         </div>
     </section>
 
@@ -131,6 +174,7 @@
 
 <footer>
     <p>© 2026 - Jafet Anaya Estrada | UTEA Cusco</p>
+    <p>Sistemas - Computación Gráfica</p>
 </footer>
 
 </body>
