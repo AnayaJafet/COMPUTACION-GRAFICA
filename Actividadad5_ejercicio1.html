@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 1 - Traslación</title>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        const geometry = new THREE.BoxGeometry(1, 1, 1);
+        const material = new THREE.MeshNormalMaterial();
+        const cubo = new THREE.Mesh(geometry, material);
+        scene.add(cubo);
+
+        camera.position.z = 5;
+
+        let direccion = 0.02;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // Mover el cubo
+            cubo.position.x += direccion;
+
+            // Lógica de rebote corregida
+            if (cubo.position.x > 5) {
+                direccion = -0.02;
+            }
+            if (cubo.position.x < -5) { // Corregido: antes decía > -2
+                direccion = 0.02;
+            }
+
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
+</body>
+</html>

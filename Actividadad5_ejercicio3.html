@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 3 - Interactivo</title>
+    <style>
+        body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
+        #info { 
+            position: absolute; top: 10px; left: 10px; 
+            background: rgba(255, 255, 255, 0.8); padding: 15px; 
+            border-radius: 8px; font-size: 14px; line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div id="info">
+        <strong>CONTROLES:</strong><br>
+        Flechas: Mover cubo (Traslación)<br>
+        Q / E: Rotar cubo (Rotación)<br>
+        Z / X: Escalar cubo (Tamaño)
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script>
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x20232a);
+        
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        const geometry = new THREE.BoxGeometry(1, 1, 1);
+        const material = new THREE.MeshNormalMaterial();
+        const cubo = new THREE.Mesh(geometry, material);
+        scene.add(cubo);
+
+        camera.position.z = 5;
+
+        // Escuchar teclado
+        window.addEventListener('keydown', (event) => {
+            switch(event.key.toLowerCase()) {
+                // Traslación
+                case 'arrowup':    cubo.position.y += 0.2; break;
+                case 'arrowdown':  cubo.position.y -= 0.2; break;
+                case 'arrowleft':  cubo.position.x -= 0.2; break;
+                case 'arrowright': cubo.position.x += 0.2; break;
+                // Rotación
+                case 'q': cubo.rotation.y -= 0.1; break;
+                case 'e': cubo.rotation.y += 0.1; break;
+                // Escalado
+                case 'z':
+                    cubo.scale.x += 0.1; cubo.scale.y += 0.1; cubo.scale.z += 0.1;
+                    break;
+                case 'x':
+                    cubo.scale.x = Math.max(0.2, cubo.scale.x - 0.1);
+                    cubo.scale.y = Math.max(0.2, cubo.scale.y - 0.1);
+                    cubo.scale.z = Math.max(0.2, cubo.scale.z - 0.1);
+                    break;
+            }
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Ajuste al cambiar tamaño de ventana
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
