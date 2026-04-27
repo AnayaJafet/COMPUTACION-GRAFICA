@@ -2,66 +2,168 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Ejercicio 3 - Interactivo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 3 - Control Interactivo con Límites</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
+        body { 
+            margin: 0; 
+            overflow: hidden; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: #020617; 
+        }
+        
+        .btn-regresar { 
+            position: absolute; 
+            top: 20px; 
+            right: 20px; 
+            z-index: 1000; 
+            padding: 10px 20px; 
+            background: rgba(30, 41, 59, 0.6); 
+            color: #38bdf8; 
+            text-decoration: none; 
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 8px; 
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .btn-regresar:hover {
+            background: #38bdf8;
+            color: #020617;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+        }
+
         #info { 
-            position: absolute; top: 10px; left: 10px; 
-            background: rgba(255, 255, 255, 0.8); padding: 15px; 
-            border-radius: 8px; font-size: 14px; line-height: 1.5;
+            position: absolute; 
+            top: 20px; 
+            left: 20px; 
+            background: rgba(15, 23, 42, 0.7); 
+            padding: 20px; 
+            border-radius: 16px; 
+            font-size: 14px; 
+            line-height: 1.8;
+            color: #f8fafc;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        #info strong {
+            color: #f472b6; /* Rosa neón para destacar el título */
+            font-size: 1.1rem;
+            display: block;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 5px;
+        }
+
+        .key {
+            background: rgba(255,255,255,0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #38bdf8;
+            font-weight: bold;
+            font-family: monospace;
         }
     </style>
 </head>
 <body>
+    <a href="javascript:history.back()" class="btn-regresar"><i class="fa-solid fa-arrow-left"></i> Regresar</a>
+    
     <div id="info">
-        <strong>CONTROLES:</strong><br>
-        Flechas: Mover cubo (Traslación)<br>
-        Q / E: Rotar cubo (Rotación)<br>
-        Z / X: Escalar cubo (Tamaño)
+        <strong><i class="fa-solid fa-gamepad"></i> CONTROLES INTERACTIVOS</strong>
+        <i class="fa-solid fa-arrows-up-down-left-right"></i> Flechas: Traslación (Limitada a pantalla)<br>
+        <i class="fa-solid fa-rotate"></i> <span class="key">Q</span> / <span class="key">E</span>: Rotación<br>
+        <i class="fa-solid fa-maximize"></i> <span class="key">Z</span> / <span class="key">X</span>: Escalar (Tamaño)
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
     <script>
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x20232a);
-        
+        scene.fog = new THREE.FogExp2(0x020617, 0.05); // Efecto de niebla suave
+
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
         document.body.appendChild(renderer.domElement);
 
+        // Añadir una cuadrícula para entender mejor el espacio 3D
+        const gridHelper = new THREE.GridHelper(20, 20, 0x38bdf8, 0x1e293b);
+        gridHelper.position.z = -2;
+        gridHelper.rotation.x = Math.PI / 2;
+        scene.add(gridHelper);
+
         const geometry = new THREE.BoxGeometry(1, 1, 1);
-        const material = new THREE.MeshNormalMaterial();
+        const material = new THREE.MeshNormalMaterial({ wireframe: false });
         const cubo = new THREE.Mesh(geometry, material);
         scene.add(cubo);
 
         camera.position.z = 5;
 
+        // Función matemática para calcular los límites de la pantalla en coordenadas 3D
+        function applyScreenLimits(object) {
+            // Convertir FOV de grados a radianes
+            const vFOV = THREE.MathUtils.degToRad(camera.fov);
+            // Distancia entre la cámara y el objeto
+            const distance = camera.position.z - object.position.z;
+            
+            // Calcular altura y anchura visible
+            const visibleHeight = 2 * Math.tan(vFOV / 2) * distance;
+            const visibleWidth = visibleHeight * camera.aspect;
+
+            // Tener en cuenta el tamaño del cubo y su escala actual para que el borde del cubo choque con la pantalla
+            const objHalfWidth = (geometry.parameters.width * object.scale.x) / 2;
+            const objHalfHeight = (geometry.parameters.height * object.scale.y) / 2;
+
+            // Limitar X e Y
+            const limitX = (visibleWidth / 2) - objHalfWidth;
+            const limitY = (visibleHeight / 2) - objHalfHeight;
+
+            object.position.x = THREE.MathUtils.clamp(object.position.x, -limitX, limitX);
+            object.position.y = THREE.MathUtils.clamp(object.position.y, -limitY, limitY);
+        }
+
         // Escuchar teclado
         window.addEventListener('keydown', (event) => {
+            const moveSpeed = 0.3;
+            const rotSpeed = 0.15;
+            const scaleSpeed = 0.1;
+
             switch(event.key.toLowerCase()) {
                 // Traslación
-                case 'arrowup':    cubo.position.y += 0.2; break;
-                case 'arrowdown':  cubo.position.y -= 0.2; break;
-                case 'arrowleft':  cubo.position.x -= 0.2; break;
-                case 'arrowright': cubo.position.x += 0.2; break;
+                case 'arrowup':    cubo.position.y += moveSpeed; break;
+                case 'arrowdown':  cubo.position.y -= moveSpeed; break;
+                case 'arrowleft':  cubo.position.x -= moveSpeed; break;
+                case 'arrowright': cubo.position.x += moveSpeed; break;
+                
                 // Rotación
-                case 'q': cubo.rotation.y -= 0.1; break;
-                case 'e': cubo.rotation.y += 0.1; break;
+                case 'q': cubo.rotation.y -= rotSpeed; cubo.rotation.z -= rotSpeed/2; break;
+                case 'e': cubo.rotation.y += rotSpeed; cubo.rotation.z += rotSpeed/2; break;
+                
                 // Escalado
                 case 'z':
-                    cubo.scale.x += 0.1; cubo.scale.y += 0.1; cubo.scale.z += 0.1;
+                    cubo.scale.x += scaleSpeed; cubo.scale.y += scaleSpeed; cubo.scale.z += scaleSpeed;
                     break;
                 case 'x':
-                    cubo.scale.x = Math.max(0.2, cubo.scale.x - 0.1);
-                    cubo.scale.y = Math.max(0.2, cubo.scale.y - 0.1);
-                    cubo.scale.z = Math.max(0.2, cubo.scale.z - 0.1);
+                    // Prevenir que el cubo se vuelva invisible (escala mínima de 0.2)
+                    cubo.scale.x = Math.max(0.2, cubo.scale.x - scaleSpeed);
+                    cubo.scale.y = Math.max(0.2, cubo.scale.y - scaleSpeed);
+                    cubo.scale.z = Math.max(0.2, cubo.scale.z - scaleSpeed);
                     break;
             }
+
+            // Aplicar límites justo después de cualquier transformación
+            applyScreenLimits(cubo);
         });
 
         function animate() {
             requestAnimationFrame(animate);
+            // Pequeña rotación pasiva para que el cubo luzca dinámico
+            cubo.rotation.x += 0.005; 
             renderer.render(scene, camera);
         }
         animate();
@@ -71,6 +173,8 @@
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
+            // Re-calcular límites si se redimensiona la ventana mientras el cubo está en el borde
+            applyScreenLimits(cubo);
         });
     </script>
 </body>
