@@ -4,198 +4,266 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portafolio | Jafet Anaya Estrada</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
-
+    
     <style>
         :root {
-            --primary: #6366f1;
-            --secondary: #a855f7;
-            --accent: #22d3ee;
-            --bg-dark: #0f172a;
-            --card-bg: rgba(255, 255, 255, 0.95);
-            --text-main: #1e293b;
-            --text-light: #64748b;
+            --primary: #38bdf8; /* Azul claro / Cyan */
+            --secondary: #818cf8; /* Índigo */
+            --accent: #f472b6; /* Rosa neón para destacar */
+            --bg-base: #020617; /* Fondo ultra oscuro */
+            --card-bg: rgba(30, 41, 59, 0.6); /* Glassmorphism oscuro */
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.1);
         }
 
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
             scroll-behavior: smooth;
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            margin: 0;
-            background-color: var(--bg-dark);
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.15) 0px, transparent 50%);
-            background-attachment: fixed;
+            background-color: var(--bg-base);
             color: var(--text-main);
             line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Canvas Background */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
         }
 
         header {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(12px);
-            color: white;
-            padding: 80px 20px;
+            padding: 100px 20px 80px;
             text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: relative;
         }
 
         header h1 {
-            margin: 0;
-            font-size: 3.5rem;
+            font-size: 4rem;
             font-weight: 800;
-            background: linear-gradient(to right, #fff, var(--accent));
+            background: linear-gradient(135deg, var(--text-main) 0%, var(--primary) 50%, var(--secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 4px 10px rgba(56, 189, 248, 0.2));
         }
 
         header p {
-            margin: 15px 0 0;
             font-size: 1.2rem;
-            color: #cbd5e1;
-            font-weight: 300;
+            color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            font-weight: 600;
+        }
+
+        .university-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: var(--primary);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            margin-top: 20px;
+            font-weight: 600;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
         }
 
         .container {
             width: 90%;
-            max-width: 1000px;
-            margin: -40px auto 60px;
+            max-width: 1100px;
+            margin: 0 auto 60px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
         }
 
         section {
             background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             padding: 40px;
-            margin-bottom: 40px;
             border-radius: 24px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            opacity: 0; /* Para la animación de entrada */
+            transform: translateY(20px);
+            animation: fadeUp 0.8s forwards;
         }
 
+        /* Retrasos para la animación en cascada */
+        section:nth-child(1) { animation-delay: 0.1s; }
+        section:nth-child(2) { animation-delay: 0.2s; }
+        section:nth-child(3) { animation-delay: 0.3s; }
+        section:nth-child(4) { animation-delay: 0.4s; }
+        section:nth-child(5) { animation-delay: 0.5s; }
+
         section:hover {
-            transform: translateY(-10px);
+            transform: translateY(-5px);
+            border-color: rgba(129, 140, 248, 0.4);
+        }
+
+        .section-highlight {
+            border: 1px solid var(--accent);
+            box-shadow: 0 0 30px rgba(244, 114, 182, 0.1);
         }
 
         h2 {
-            color: var(--primary);
+            color: var(--text-main);
             display: flex;
             align-items: center;
-            gap: 15px;
-            font-size: 1.8rem;
+            gap: 12px;
+            font-size: 1.6rem;
             margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
         }
 
         h2 i {
+            color: var(--primary);
             font-size: 1.4rem;
-            color: var(--secondary);
+        }
+
+        .info {
+            font-size: 1.1rem;
+            color: var(--text-muted);
         }
 
         .info strong {
-            color: var(--primary);
+            color: var(--text-main);
+            font-weight: 600;
         }
+
+        /* Etiquetas de Habilidades */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .skill-tag {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            padding: 6px 15px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .skill-tag i { color: var(--primary); }
 
         .links {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            gap: 15px;
         }
 
         .links a {
             display: flex;
             align-items: center;
-            padding: 18px 24px;
-            background: white;
-            color: var(--text-main);
+            padding: 20px;
+            background: rgba(15, 23, 42, 0.6);
+            color: var(--text-muted);
             text-decoration: none;
             border-radius: 16px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid var(--border-color);
             transition: all 0.3s ease;
             font-weight: 600;
-            gap: 12px;
+            gap: 15px;
         }
 
         .links a i {
-            font-size: 1.2rem;
-            color: var(--primary);
-            transition: transform 0.3s ease;
+            font-size: 1.4rem;
+            color: var(--secondary);
+            transition: transform 0.3s ease, color 0.3s ease;
         }
 
         .links a:hover {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            border-color: transparent;
-            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+            background: var(--primary);
+            color: var(--bg-base);
+            border-color: var(--primary);
+            transform: scale(1.02);
+            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.2);
         }
 
         .links a:hover i {
-            color: white;
+            color: var(--bg-base);
             transform: translateX(5px);
         }
 
         footer {
             text-align: center;
-            padding: 50px 20px;
-            background: #070b14;
-            color: #94a3b8;
+            padding: 40px 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
             font-size: 0.95rem;
+            background: rgba(2, 6, 23, 0.8);
         }
 
-        /* Badge de Universidad */
-        .university-badge {
-            display: inline-block;
-            background: rgba(99, 102, 241, 0.1);
-            color: var(--primary);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            margin-top: 10px;
-            font-weight: 600;
-        }
-
-        /* Animaciones */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
+        @keyframes fadeUp {
             to { opacity: 1; transform: translateY(0); }
         }
 
-        section {
-            animation: fadeIn 0.8s ease-out forwards;
-        }
-
-        @media (max-width: 600px) {
-            header h1 { font-size: 2.2rem; }
-            section { padding: 25px; }
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.8rem; }
+            section { padding: 30px 20px; }
         }
     </style>
 </head>
 <body>
 
+<canvas id="bg-canvas"></canvas>
+
 <header>
     <h1>Jafet Anaya Estrada</h1>
     <p>Ingeniería de Sistemas</p>
-    <div class="university-badge">UTEA Cusco • Computación Gráfica</div>
+    <div>
+        <span class="university-badge"><i class="fa-solid fa-graduation-cap"></i> UTEA Cusco • Computación Gráfica</span>
+    </div>
 </header>
 
 <div class="container">
-
+    
     <section>
-        <h2><i class="fa-solid fa-user-astronaut"></i> Sobre mí</h2>
+        <h2><i class="fa-solid fa-user-astronaut"></i> Perfil Profesional</h2>
         <p class="info">
-            Estudiante apasionado por la <strong>Ingeniería de Sistemas</strong> en la UTEA Cusco. 
-            Especializado en el desarrollo de soluciones interactivas, algoritmos gráficos y 
-            entornos web modernos. Mi enfoque combina la lógica técnica con la creatividad visual.
+            Estudiante apasionado por la <strong>Ingeniería de Sistemas</strong>. 
+            Especializado en el desarrollo de soluciones interactivas, algoritmos matemáticos para gráficos y 
+            entornos visuales en la web. Mi enfoque es transformar matemáticas puras en experiencias visuales interactivas.
         </p>
+        <div class="skills-container">
+            <span class="skill-tag"><i class="fa-brands fa-html5"></i> HTML5 Canvas</span>
+            <span class="skill-tag"><i class="fa-brands fa-js"></i> JavaScript ES6</span>
+            <span class="skill-tag"><i class="fa-solid fa-cube"></i> Three.js / WebGL</span>
+            <span class="skill-tag"><i class="fa-solid fa-calculator"></i> Geometría Paramétrica</span>
+            <span class="skill-tag"><i class="fa-solid fa-laptop-code"></i> Diseño de Interfaces</span>
+        </div>
     </section>
 
     <section>
-        <h2><i class="fa-solid fa-code"></i> Proyectos Académicos</h2>
+        <h2><i class="fa-solid fa-code"></i> Modelado 2D y Funciones</h2>
         <div class="links">
             <a href="CIRCULO.HTML"><i class="fa-regular fa-circle"></i> Proyecto Círculo</a>
             <a href="CUADRADOTRIANGULO.HTML"><i class="fa-solid fa-shapes"></i> Cuadrado y Triángulo</a>
@@ -206,7 +274,7 @@
     </section>
 
     <section>
-        <h2><i class="fa-solid fa-bolt"></i> ACTIVIDAD NRO.4</h2>
+        <h2><i class="fa-solid fa-bolt"></i> Cinemática y Animación</h2>
         <div class="links">
             <a href="Actividad1.html"><i class="fa-solid fa-layer-group"></i> 1. Barras Dinámicas</a>
             <a href="Actividad2.html"><i class="fa-solid fa-ellipsis-h"></i> 2. Puntos en Movimiento</a>
@@ -214,21 +282,94 @@
         </div>
     </section>
 
-    <section style="border: 2px solid var(--accent);">
-        <h2><i class="fa-solid fa-cube"></i> ACTIVIDAD NRO.5</h2>
+    <section class="section-highlight">
+        <h2><i class="fa-solid fa-cube" style="color: var(--accent);"></i> Transformaciones Espaciales 3D</h2>
         <div class="links">
             <a href="Actividadad5_ejercicio1.html"><i class="fa-solid fa-arrows-left-right"></i> 1. Traslación 3D</a>
             <a href="Actividadad5_ejercicio2.html"><i class="fa-solid fa-rotate"></i> 2. Rotación Continua</a>
             <a href="Actividadad5_ejercicio3.html"><i class="fa-solid fa-gamepad"></i> 3. Control Interactivo</a>
         </div>
     </section>
-
 </div>
 
 <footer>
-    <p><i class="fa-solid fa-graduation-cap"></i> © 2026 - Portafolio Académico</p>
-    <p>Jafet Anaya Estrada | Universidad Tecnológica de los Andes</p>
+    <p>© 2026 - Portafolio de Desarrollo y Computación Gráfica</p>
+    <p style="margin-top: 5px; color: var(--border-color);">Jafet Anaya Estrada | UTEA Cusco</p>
 </footer>
+
+<script>
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, particles;
+
+    function init() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        particles = [];
+        const particleCount = window.innerWidth < 768 ? 40 : 80;
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+    }
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.vx = (Math.random() - 0.5) * 0.5;
+            this.vy = (Math.random() - 0.5) * 0.5;
+            this.radius = Math.random() * 1.5 + 0.5;
+        }
+
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+
+            if (this.x < 0 || this.x > width) this.vx *= -1;
+            if (this.y < 0 || this.y > height) this.vy *= -1;
+        }
+
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(56, 189, 248, 0.5)';
+            ctx.fill();
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+        
+        particles.forEach(p => {
+            p.update();
+            p.draw();
+        });
+
+        // Dibujar líneas de conexión
+        for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < 120) {
+                    ctx.beginPath();
+                    ctx.strokeStyle = `rgba(129, 140, 248, ${1 - distance/120})`;
+                    ctx.lineWidth = 0.5;
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.stroke();
+                }
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', init);
+    init();
+    animate();
+</script>
 
 </body>
 </html>
