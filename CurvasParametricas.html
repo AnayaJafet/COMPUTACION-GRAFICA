@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estudio de Curvas Paramétricas | Jafet Anaya</title>
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+          tex: { inlineMath: [['$', '$']] }
+        };
+    </script>
+
+    <style>
+        :root {
+            --bg-base: #0f1419;
+            --surface: #1a212a;
+            --accent: #2de0a5; /* Verde esmeralda neón */
+            --text-light: #e6e6e6;
+            --text-dim: #9ca3af;
+            --border-line: #2d3748;
+        }
+
+        body { 
+            margin: 0; 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+            background-color: var(--bg-base); 
+            color: var(--text-light); 
+            line-height: 1.7; 
+        }
+
+        .wrapper { 
+            max-width: 850px; 
+            margin: 0 auto; 
+            padding: 50px 20px; 
+        }
+
+        .btn-back { 
+            position: fixed; 
+            top: 25px; 
+            left: 25px; 
+            padding: 8px 16px; 
+            background: transparent; 
+            color: var(--accent); 
+            text-decoration: none; 
+            border: 2px solid var(--accent);
+            border-radius: 8px; 
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-back:hover {
+            background: var(--accent);
+            color: var(--bg-base);
+            box-shadow: 0 0 12px rgba(45, 224, 165, 0.5);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 { 
+            color: #ffffff; 
+            font-size: 2.8rem; 
+            margin-bottom: 5px;
+            letter-spacing: -1px;
+        }
+
+        h1 span {
+            color: var(--accent);
+        }
+
+        .author-tag {
+            display: inline-block;
+            background: rgba(45, 224, 165, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            border: 1px solid rgba(45, 224, 165, 0.3);
+        }
+
+        .content-box { 
+            background: var(--surface); 
+            padding: 35px; 
+            border-radius: 16px; 
+            border: 1px solid var(--border-line); 
+            margin-bottom: 35px; 
+            transition: transform 0.2s;
+        }
+
+        .content-box:hover {
+            transform: translateY(-3px);
+            border-color: rgba(45, 224, 165, 0.4);
+        }
+
+        h2 { 
+            color: var(--accent); 
+            margin-top: 0; 
+            font-size: 1.4rem; 
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2::before {
+            content: "";
+            display: block;
+            width: 8px;
+            height: 24px;
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        p { margin-bottom: 15px; }
+
+        canvas { 
+            display: block; 
+            margin: 30px auto 15px auto; 
+            background: #000; 
+            border-radius: 10px; 
+            width: 100%; 
+            max-width: 600px; 
+            height: 400px; 
+            border: 2px solid var(--border-line);
+        }
+
+        .math-container {
+            background: #0a0d10;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            border-left: 3px solid var(--accent);
+            margin: 20px 0;
+        }
+        
+        .keyword {
+            color: var(--accent);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <a href="#" class="btn-back">← Regresar</a>
+    
+    <div class="wrapper">
+        <header>
+            <h1>Geometría <span>Paramétrica</span></h1>
+            <div class="author-tag">Desarrollado por: Anaya Estrada Jafet Antony</div>
+        </header>
+
+        <div class="content-box">
+            <h2>1. Topología y Continuidad en Superficies</h2>
+            <p>En el modelado matemático, una curva se define mediante un vector dependiente de una variable $t$. Para garantizar que la unión entre dos tramos de curva sea imperceptible, evaluamos su nivel de continuidad:</p>
+            <ul>
+                <li><b>Continuidad $C^0$ y $G^0$:</b> Ambas curvas comparten el mismo punto final. Es una unión "afilada" o en vértice.</li>
+                <li><b>Continuidad $C^1$ (Paramétrica):</b> Exige que la primera derivada (el vector velocidad) sea idéntica en el punto de contacto.</li>
+                <li><b>Continuidad $G^2$ (Curvatura):</b> Exige que el radio de curvatura sea continuo. En el diseño industrial, esto garantiza que los reflejos sobre materiales brillantes (como la pintura de un auto) no presenten distorsiones ni cortes visuales.</li>
+            </ul>
+        </div>
+
+        <div class="content-box">
+            <h2>2. Fundamentos de las Curvas de Bézier</h2>
+            <p>Las curvas de Bézier revolucionaron el diseño asistido por computadora. Su estructura matemática se apoya en los polinomios de Bernstein, que actúan como "pesos" que tiran de la curva hacia los puntos de control $\mathbf{P}_i$:</p>
+            
+            <div class="math-container">
+                $$C(t) = \sum_{i=0}^{n} \binom{n}{i} t^i (1-t)^{n-i} \mathbf{P}_i \quad \text{donde } 0 \le t \le 1$$
+            </div>
+            
+            <p>La limitación principal de las curvas de Bézier polinómicas es su incapacidad para modelar secciones cónicas exactas. Para solucionar esto, la industria moderna utiliza <span class="keyword">NURBS</span>, que aplican divisiones polinómicas para lograr círculos y elipses matemáticamente puros.</p>
+        </div>
+
+        <div class="content-box">
+            <h2>3. Visualización Dinámica: La Epitrocoide</h2>
+            <p>A diferencia de la hipocicloide, una <b>Epitrocoide</b> se traza por un punto unido a un círculo de radio $r$ que rueda por el <i>exterior</i> de un círculo fijo de radio $R$. Si el punto está a una distancia $d$ del centro del círculo móvil, las ecuaciones paramétricas son:</p>
+            
+            <div class="math-container">
+                $$x(t) = (R + r) \cos(t) - d \cos\left(\frac{R + r}{r} t\right)$$
+                $$y(t) = (R + r) \sin(t) - d \sin\left(\frac{R + r}{r} t\right)$$
+            </div>
+            
+            <canvas id="epiCanvas"></canvas>
+            <p style="text-align: center; color: var(--text-dim); font-size: 0.9rem;">Representación de una Epitrocoide con $R=80, r=30, d=50$</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('epiCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 600; 
+        canvas.height = 400;
+
+        // Parámetros de la Epitrocoide
+        const R = 80;   // Radio del círculo fijo
+        const r = 30;   // Radio del círculo móvil
+        const d = 50;   // Distancia del punto al centro del círculo móvil
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        
+        let time = 0;
+        // Para que la curva se cierre, el parámetro máximo debe ser un múltiplo común.
+        const maxTime = Math.PI * 6; 
+        const speed = 0.04;
+
+        // Dibujar cuadrícula de fondo
+        function drawGrid() {
+            ctx.strokeStyle = '#1a212a';
+            ctx.lineWidth = 1;
+            for(let i = 0; i < canvas.width; i += 40) {
+                ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
+            }
+            for(let i = 0; i < canvas.height; i += 40) {
+                ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.stroke();
+            }
+        }
+
+        // Configuración de la línea de dibujo
+        ctx.strokeStyle = '#2de0a5'; // Color acento
+        ctx.lineWidth = 2;
+        ctx.lineJoin = 'round';
+        
+        // Efecto neón
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = '#2de0a5';
+
+        drawGrid();
+        ctx.beginPath();
+
+        function animateCurve() {
+            if (time > maxTime) return; // Detener animación al completar
+
+            // Fórmulas paramétricas de la Epitrocoide
+            let x = (R + r) * Math.cos(time) - d * Math.cos(((R + r) / r) * time);
+            let y = (R + r) * Math.sin(time) - d * Math.sin(((R + r) / r) * time);
+
+            if (time === 0) {
+                ctx.moveTo(cx + x, cy + y);
+            } else {
+                ctx.lineTo(cx + x, cy + y);
+                ctx.stroke();
+            }
+
+            time += speed;
+            requestAnimationFrame(animateCurve);
+        }
+
+        // Iniciar el renderizado
+        animateCurve();
+    </script>
+</body>
+</html>

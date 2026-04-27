@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topología de Mallas 3D | Jafet Anaya</title>
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = { tex: { inlineMath: [['$', '$']] } };
+    </script>
+
+    <style>
+        :root {
+            --bg-main: #09090b;
+            --bg-card: #121214;
+            --accent: #ff6b00; /* Naranja Neón */
+            --accent-glow: rgba(255, 107, 0, 0.4);
+            --text-primary: #e4e4e7;
+            --text-secondary: #a1a1aa;
+            --border-color: #27272a;
+        }
+
+        body { 
+            margin: 0; 
+            font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+            background: var(--bg-main); 
+            color: var(--text-primary); 
+            line-height: 1.7; 
+        }
+
+        .container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            padding: 60px 20px; 
+        }
+
+        .btn-regresar { 
+            position: fixed; 
+            top: 20px; 
+            left: 20px; 
+            z-index: 1000; 
+            padding: 10px 20px; 
+            background: transparent; 
+            color: var(--accent); 
+            text-decoration: none; 
+            border: 1px solid var(--accent);
+            border-radius: 4px; 
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-regresar:hover {
+            background: var(--accent);
+            color: #000;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 { 
+            color: #fff; 
+            font-size: 2.5rem; 
+            margin-bottom: 10px;
+            border-bottom: 2px solid var(--border-color); 
+            padding-bottom: 20px; 
+        }
+
+        h1 span { color: var(--accent); }
+
+        .author { 
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .box { 
+            background: var(--bg-card); 
+            padding: 30px; 
+            border-radius: 8px; 
+            border: 1px solid var(--border-color); 
+            margin-bottom: 30px; 
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s ease;
+        }
+
+        .box:hover {
+            border-color: var(--accent);
+        }
+
+        .box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent);
+        }
+
+        h2 { 
+            color: var(--accent); 
+            margin-top: 0; 
+            font-size: 1.5rem; 
+        }
+
+        .math-panel {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px dashed var(--border-color);
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        .highlight { color: var(--accent); font-weight: bold; }
+
+        #viewer3d { 
+            width: 100%; 
+            height: 450px; 
+            background: #000; 
+            border-radius: 8px; 
+            border: 1px solid var(--border-color); 
+            margin-top: 20px;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.8);
+        }
+    </style>
+</head>
+<body>
+    <a href="#" class="btn-regresar">← Regresar</a>
+    
+    <div class="container">        
+        <header>
+            <h1>Geometría de Mallas <span>Poligonales</span></h1>
+            <div class="author">Investigación por: Anaya Estrada Jafet Antony</div>
+        </header>
+
+        <div class="box">            
+            <h2>1. Topología y la Característica de Euler</h2>            
+            <p>Una malla poligonal en 3D se estructura mediante Vértices ($V$), Aristas ($E$, del inglés *Edges*) y Caras ($F$, del inglés *Faces*). Para que una malla se considere computacionalmente válida (topología cerrada o "Manifold"), debe cumplir con la <b>Característica de Euler-Poincaré</b>:</p>            
+            
+            <div class="math-panel">
+                $$V - E + F = 2 - 2g$$
+            </div>
+            
+            <p>Donde $g$ representa el "género" de la superficie (el número de agujeros). Para una esfera o un cubo ($g=0$), la ecuación siempre resultará en 2. Esta fórmula es vital para algoritmos de validación en impresión 3D e ingeniería inversa, asegurando que la geometría no contenga huecos o polígonos auto-intersectantes.</p>        
+        </div>
+        
+        <div class="box">            
+            <h2>2. Algoritmos de Subdivisión (Catmull-Clark)</h2>            
+            <p>Las mallas de bajo poligonaje (Low-Poly) son eficientes en memoria, pero carecen de la curvatura necesaria para renderizados fotorrealistas. La solución industrial es la <span class="highlight">Subdivisión de Superficies</span>.</p>            
+            <p>El esquema de <b>Catmull-Clark</b> (creado por Edwin Catmull de Pixar) refina la malla recursivamente:</p>
+            <ul>                
+                <li>Genera un nuevo vértice en el centroide de cada cara original.</li>                
+                <li>Genera un nuevo vértice en el punto medio de cada arista.</li>                
+                <li>Conecta los nuevos puntos para reemplazar cada polígono original por múltiples cuadriláteros ($Quads$), acercando la malla límite a una superficie paramétrica continua ($C^2$).</li>            
+            </ul>        
+        </div>
+        
+        <div class="box">            
+            <h2>3. Visualización Dinámica: Icosaedro Subdividido</h2>            
+            <p>Este modelo ilustra una geometría base (sólida oscura) superpuesta con su propia topología alámbrica (naranja brillante). Observa cómo las aristas se conectan para formar una estructura esférica aproximada a través de la subdivisión.</p>            
+            <div id="viewer3d"></div>        
+        </div>    
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>    
+    <script>        
+        const container = document.getElementById('viewer3d');        
+        const scene = new THREE.Scene();        
+        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);        
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });                
+        
+        renderer.setSize(container.clientWidth, container.clientHeight);        
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+
+        // Iluminación para dar volumen
+        const ambientLight = new THREE.AmbientLight(0x404040, 2); 
+        scene.add(ambientLight);
+        
+        const pointLight = new THREE.PointLight(0xffffff, 1.5);
+        pointLight.position.set(5, 5, 5);
+        scene.add(pointLight);
+
+        const pointLight2 = new THREE.PointLight(0xff6b00, 2);
+        pointLight2.position.set(-5, -5, 2);
+        scene.add(pointLight2);
+
+        // Geometría: Icosaedro con nivel de subdivisión 2
+        const geometry = new THREE.IcosahedronGeometry(1.4, 2);        
+        
+        // Material Dual: Sólido oscuro y Wireframe luminoso
+        const solidMaterial = new THREE.MeshStandardMaterial({ 
+            color: 0x111111, 
+            roughness: 0.6,
+            metalness: 0.5
+        });
+        
+        const wireframeMaterial = new THREE.MeshBasicMaterial({ 
+            color: 0xff6b00, 
+            wireframe: true,
+            transparent: true,
+            opacity: 0.4
+        });
+
+        const solidMesh = new THREE.Mesh(geometry, solidMaterial);        
+        const wireframeMesh = new THREE.Mesh(geometry, wireframeMaterial);
+        
+        // Agrupar ambos materiales
+        const group = new THREE.Group();
+        group.add(solidMesh);
+        group.add(wireframeMesh);
+        scene.add(group);
+
+        camera.position.z = 4.5;
+        
+        let time = 0;
+
+        function animate() {            
+            requestAnimationFrame(animate);            
+            
+            // Rotación suave
+            group.rotation.y += 0.003;            
+            group.rotation.x += 0.002;            
+            
+            // Efecto de flotación (movimiento sinusoidal en el eje Y)
+            time += 0.02;
+            group.position.y = Math.sin(time) * 0.1;
+
+            renderer.render(scene, camera);        
+        }        
+        
+        animate();    
+
+        // Ajuste responsivo del canvas
+        window.addEventListener('resize', () => {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        });
+    </script>
+</body>
+</html>
