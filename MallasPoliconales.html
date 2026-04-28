@@ -1,89 +1,108 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monografía: Mallas Poligonales - Jafet Anaya</title>
-    <style>
-        :root {
-            --bg: #0d1117; --surface: #161b22; --border: #30363d;
-            --text: #c9d1d9; --accent: #3fb950;
-        }
-        body { margin: 0; font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; }
-        header { background: linear-gradient(180deg, #161b22, #0d1117); padding: 80px 20px; border-bottom: 1px solid var(--border); text-align: center; }
-        .wrap { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
-        section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 40px; margin-bottom: 30px; }
-        h1 { font-size: 2.5rem; color: #fff; margin: 0; }
-        h2 { color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-        .canvas-3d { height: 450px; background: #000; border-radius: 12px; border: 2px solid var(--border); margin: 25px 0; }
-        .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0; }
-        .card { background: #0d1117; padding: 15px; border-radius: 8px; border: 1px solid var(--border); text-align: center; font-size: 0.9rem; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Investigación: Mallas Poligonales</title>
+  <style>
+    :root {
+      --bg: #1a202c;
+      --surface: #2d3748;
+      --surface-2: #1a202c;
+      --text: #edf2f7;
+      --accent: #48bb78;
+      --border: #4a5568;
+      --shadow: 0 10px 30px rgba(0,0,0,0.5);
+      --max: 1080px;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+    header { background: linear-gradient(135deg, #2f855a, #22543d); color: white; padding: 60px 24px; text-align: center; }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 20px; }
+    section { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 40px; margin: 30px 0; box-shadow: var(--shadow); }
+    h2 { font-size: 2rem; border-bottom: 3px solid var(--accent); padding-bottom: 8px; color: #fff; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin: 25px 0; }
+    .card { background: var(--surface-2); padding: 20px; border-radius: 15px; border: 1px solid var(--border); }
+    .canvas-3d { margin-top: 30px; background: #000; border-radius: 15px; height: 500px; position: relative; border: 2px solid var(--accent); }
+    .overlay { position: absolute; top: 15px; width: 100%; text-align: center; pointer-events: none; }
+    #canvasMalla { width: 100%; height: 100%; }
+    .refs { margin-top: 40px; opacity: 0.8; }
+  </style>
 </head>
 <body>
+  <header>
+    <div class="wrap">
+      <h1>Mallas Poligonales</h1>
+      <p>Representación discreta y topología de superficies tridimensionales</p>
+    </div>
+  </header>
 
-<header>
-    <h1>Monografía: Mallas Poligonales</h1>
-    <p style="color: #8b949e;">Análisis de la Estructura Discreta en Renderizado 3D</p>
-</header>
-
-<main class="wrap">
+  <main class="wrap">
     <section>
-        <h2>1. Definición y Componentes</h2>
-        <p>
-            Una <strong>malla poligonal</strong> es una aproximación discreta de una superficie continua. A diferencia de las curvas matemáticas, las mallas dividen el espacio en facetas planas.
-        </p>
-        <div class="card-grid">
-            <div class="card"><strong>Vértices</strong><br>Puntos de anclaje en el espacio 3D.</div>
-            <div class="card"><strong>Aristas</strong><br>Conexiones entre dos vértices.</div>
-            <div class="card"><strong>Caras</strong><br>Superficies cerradas (Tris o Quads).</div>
+      <h2>Estructura de la Malla</h2>
+      <p>Una malla poligonal es una colección de vértices, aristas y caras que definen la forma de un objeto poliedral en computación gráfica. Es la unidad fundamental que las GPUs procesan durante la rasterización.</p>
+      
+      <div class="grid">
+        <div class="card">
+          <h3>Componentes</h3>
+          <p><strong>Vértices:</strong> Puntos (x,y,z). <br><strong>Aristas:</strong> Conexiones entre vértices.<br><strong>Caras:</strong> Superficies cerradas (Tris o Quads).</p>
         </div>
-    </section>
-
-    <section>
-        <h2>2. Topología y Estructuras de Datos</h2>
-        <p>
-            La topología estudia cómo están conectados estos elementos. Para el procesamiento eficiente, se utilizan estructuras como <strong>Half-Edge</strong>, que permite navegar entre caras adyacentes rápidamente.
-        </p>
-        <h3>Visualización: Topología de Malla (Wireframe)</h3>
-        <p>El siguiente modelo muestra la red de polígonos que conforman una superficie compleja:</p>
-        <div class="canvas-3d" id="viewportMalla"></div>
-    </section>
-
-    <section>
-        <h2>3. Algoritmos de Simplificación (QEM)</h2>
-        <p>
-            El algoritmo <strong>Quadric Error Metrics</strong> es fundamental para optimizar mallas. Permite reducir el número de polígonos (colapso de aristas) manteniendo la silueta original del objeto mediante el cálculo del error cuadrático mínimo.
-        </p>
-        <div style="border-top: 1px solid var(--border); margin-top: 20px; padding-top: 10px; font-size: 0.85rem;">
-            <strong>Conclusión:</strong> La eficiencia en videojuegos y simulaciones depende de una malla bien optimizada con un flujo topológico correcto.
+        <div class="card">
+          <h3>Topología</h3>
+          <p>Estudia la conectividad. Estructuras como <em>Half-Edge</em> permiten navegar eficientemente entre elementos adyacentes para algoritmos de edición.</p>
         </div>
-    </section>
-</main>
+      </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-    const el = document.getElementById('viewportMalla');
+      <h3>Visualización Topológica</h3>
+      <p>En el renderizado siguiente, se observa una geometría compleja en modo <strong>Wireframe</strong>. Esto resalta la "teselación" o división de la superficie en polígonos simples.</p>
+      
+      <div class="canvas-3d">
+        <div class="overlay">
+          <h4>Visor de Topología de Red</h4>
+          <p>Modelo Torus Knot mostrando la distribución de facetas</p>
+        </div>
+        <div id="canvasMalla"></div>
+      </div>
+
+      <div class="refs">
+        <h3>Bibliografía Consultada</h3>
+        <ol>
+          <li>Botsch, M., et al. (2010). <em>Polygon Mesh Processing</em>. CRC Press.</li>
+          <li>Akenine-Möller, T. (2018). <em>Real-Time Rendering</em>. AK Peters.</li>
+          <li>Heckbert, P. (1997). <em>Survey of Polygonal Simplification Algorithms</em>.</li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    const cont = document.getElementById('canvasMalla');
     const scene = new THREE.Scene();
-    const cam = new THREE.PerspectiveCamera(50, el.clientWidth/el.clientHeight, 0.1, 1000);
+    const cam = new THREE.PerspectiveCamera(45, cont.clientWidth / cont.clientHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(el.clientWidth, el.clientHeight);
-    el.appendChild(renderer.domElement);
+    renderer.setSize(cont.clientWidth, cont.clientHeight);
+    cont.appendChild(renderer.domElement);
 
-    const geometry = new THREE.TorusKnotGeometry(2, 0.6, 100, 16);
-    const material = new THREE.MeshBasicMaterial({ color: 0x3fb950, wireframe: true });
+    cam.position.set(0, 0, 10);
+
+    const geometry = new THREE.TorusKnotGeometry(2.5, 0.7, 150, 20);
+    const material = new THREE.MeshBasicMaterial({ color: 0x48bb78, wireframe: true, transparent: true, opacity: 0.6 });
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
-    cam.position.z = 8;
+    // Luz para dar volumen opcional
+    const light = new THREE.PointLight(0xffffff, 1);
+    light.position.set(5, 5, 5);
+    scene.add(light);
 
     function animate() {
-        requestAnimationFrame(animate);
-        mesh.rotation.y += 0.01;
-        mesh.rotation.x += 0.005;
-        renderer.render(scene, cam);
+      requestAnimationFrame(animate);
+      mesh.rotation.y += 0.005;
+      mesh.rotation.x += 0.005;
+      renderer.render(scene, cam);
     }
     animate();
-</script>
+  </script>
 </body>
 </html>
