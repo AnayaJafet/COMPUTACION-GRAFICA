@@ -1,75 +1,99 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Geometría Paramétrica | Documentación Técnica</title>
-    <style>
-        :root {
-            --bg: #0a0c10;
-            --surface: #161b22;
-            --accent: #58a6ff;
-            --text: #c9d1d9;
-            --border: #30363d;
-        }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); color: var(--text); margin: 0; line-height: 1.6; }
-        header { background: linear-gradient(135deg, #1f6feb, #111); padding: 60px 20px; text-align: center; border-bottom: 1px solid var(--border); }
-        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
-        section { background: var(--surface); padding: 30px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 30px; }
-        h1, h2 { color: #fff; }
-        h2 { border-left: 4px solid var(--accent); padding-left: 15px; }
-        .canvas-box { height: 450px; background: #000; border-radius: 8px; margin-top: 20px; border: 1px solid var(--accent); }
-        code { color: #ff7b72; background: rgba(110, 118, 129, 0.2); padding: 2px 5px; border-radius: 4px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curvas Paramétricas | Documentación Técnica</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --text: #c9d1d9;
+      --accent: #58a6ff;
+      --border: #30363d;
+      --math: #79c0ff;
+    }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    header { background: #010409; padding: 60px 24px; border-bottom: 1px solid var(--border); text-align: center; }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 20px; }
+    section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 30px; margin: 20px 0; }
+    h1 { color: #fff; font-size: 2.5rem; margin-bottom: 10px; }
+    h2 { color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+    .math { background: #000; padding: 15px; border-radius: 8px; font-family: "Courier New", monospace; color: var(--math); text-align: center; margin: 20px 0; }
+    .canvas-container { height: 450px; background: #000; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; position: relative; }
+    .label-3d { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.7); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; border: 1px solid var(--accent); }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 10px; }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Curvas Paramétricas</h1>
-        <p>Representación matemática de trayectorias continuas en el espacio digital.</p>
-    </header>
-    <main class="container">
-        <section>
-            <h2>Concepto y Definición</h2>
-            <p>Una curva paramétrica es una función donde las coordenadas <code>(x, y, z)</code> dependen de un parámetro independiente <code>t</code>, usualmente en el intervalo.</p>
-            <p>A diferencia de las funciones explícitas, permiten representar formas cerradas y auto-intersecciones, fundamentales en el diseño 3D y la tipografía digital.</p>
-        </section>
+  <header>
+    <h1>Curvas Paramétricas</h1>
+    <p>Modelado geométrico continuo en espacios digitales</p>
+  </header>
+  
+  <main class="wrap">
+    <section>
+      <h2>Fundamentos Matemáticos</h2>
+      <p>A diferencia de las funciones tradicionales y = f(x), las curvas paramétricas definen las coordenadas como funciones de una variable independiente <em>t</em>. Esto permite que una curva regrese sobre sí misma o forme lazos.</p>
+      <div class="math">
+        P(t) = ( x(t), y(t), z(t) ) <br>
+        t ∈
+      </div>
+      <p>En computación gráfica, esto es vital para la <strong>continuidad</strong>. Al variar <em>t</em> suavemente, obtenemos una trayectoria fluida, ideal para fuentes de texto (tipografía) y diseño industrial.</p>
+    </section>
 
-        <section>
-            <h2>Simulación: Curva de Bézier Cúbica</h2>
-            <p>Debajo se muestra una curva generada por 4 puntos de control. Los puntos intermedios (naranja) se animan para demostrar cómo la curva se adapta dinámicamente.</p>
-            <div id="curva3d" class="canvas-box"></div>
-        </section>
-    </main>
+    <section>
+      <h2>Visualización: Curva de Bézier Cúbica</h2>
+      <p>Las curvas de Bézier usan puntos de control para "tirar" de la curva sin que esta necesariamente pase por ellos. Abajo, los puntos naranja se mueven para demostrar la flexibilidad del modelo.</p>
+      <div class="canvas-container">
+        <div class="label-3d">Simulación en Tiempo Real (Three.js)</div>
+        <div id="canvasCurva" style="width:100%; height:100%;"></div>
+      </div>
+    </section>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script>
-        const cont = document.getElementById('curva3d');
-        const scene = new THREE.Scene();
-        const cam = new THREE.PerspectiveCamera(50, cont.clientWidth/cont.clientHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(cont.clientWidth, cont.clientHeight);
-        cont.appendChild(renderer.domElement);
+    <section>
+      <h2>Aplicaciones Clave</h2>
+      <ul>
+        <li><strong>NURBS:</strong> El estándar en ingeniería (CAD) para representar círculos y elipses de forma exacta.</li>
+        <li><strong>Interpolación:</strong> Para suavizar el movimiento de cámaras en videojuegos.</li>
+        <li><strong>Fuentes:</strong> Formatos como .OTF o .TTF usan estas curvas para escalar letras sin perder calidad.</li>
+      </ul>
+    </section>
+  </main>
 
-        const curveGeo = new THREE.BufferGeometry();
-        const line = new THREE.Line(curveGeo, new THREE.LineBasicMaterial({ color: 0x58a6ff, linewidth: 2 }));
-        scene.add(line);
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    const cont = document.getElementById('canvasCurva');
+    const scene = new THREE.Scene();
+    const cam = new THREE.PerspectiveCamera(45, cont.clientWidth / cont.clientHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(cont.clientWidth, cont.clientHeight);
+    cont.appendChild(renderer.domElement);
 
-        cam.position.z = 10;
+    scene.add(new THREE.GridHelper(10, 10, 0x333333, 0x222222));
+    cam.position.set(5, 5, 10);
+    cam.lookAt(0, 0, 0);
 
-        function animate() {
-            requestAnimationFrame(animate);
-            const time = Date.now() * 0.002;
-            const p0 = new THREE.Vector3(-4, 0, 0);
-            const p1 = new THREE.Vector3(-2, Math.sin(time)*3, Math.cos(time)*2);
-            const p2 = new THREE.Vector3(2, Math.cos(time)*3, Math.sin(time)*2);
-            const p3 = new THREE.Vector3(4, 0, 0);
+    const matCurva = new THREE.LineBasicMaterial({ color: 0x58a6ff, linewidth: 2 });
+    const geomCurva = new THREE.BufferGeometry();
+    const linea = new THREE.Line(geomCurva, matCurva);
+    scene.add(linea);
 
-            const curve = new THREE.CubicBezierCurve3(p0, p1, p2, p3);
-            curveGeo.setFromPoints(curve.getPoints(50));
-            scene.rotation.y += 0.01;
-            renderer.render(scene, cam);
-        }
-        animate();
-    </script>
+    function animate() {
+      requestAnimationFrame(animate);
+      const t = Date.now() * 0.001;
+      const p0 = new THREE.Vector3(-4, 0, 0);
+      const p1 = new THREE.Vector3(-2, Math.sin(t)*3, Math.cos(t)*2);
+      const p2 = new THREE.Vector3(2, Math.cos(t)*3, Math.sin(t)*2);
+      const p3 = new THREE.Vector3(4, 0, 0);
+
+      const curve = new THREE.CubicBezierCurve3(p0, p1, p2, p3);
+      geomCurva.setFromPoints(curve.getPoints(50));
+      scene.rotation.y += 0.005;
+      renderer.render(scene, cam);
+    }
+    animate();
+  </script>
 </body>
 </html>
