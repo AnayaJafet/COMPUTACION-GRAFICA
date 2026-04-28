@@ -1,96 +1,40 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curvas Paramétricas | Repositorio</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>window.MathJax = { tex: { inlineMath: [['$', '$']] } };</script>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8fafc; color: #1e293b; margin: 0; padding: 40px; line-height: 1.6; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        h1 { color: #2563eb; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
-        h2 { color: #334155; margin-top: 30px; }
-        .math-box { background: #f1f5f9; padding: 15px; border-radius: 6px; text-align: center; font-size: 1.1rem; margin: 20px 0; }
-        .lab { background: #0f172a; padding: 20px; border-radius: 8px; margin-top: 30px; color: white; }
-        canvas { background: #000; width: 100%; height: 350px; border-radius: 6px; display: block; }
-        .controls { display: flex; gap: 15px; margin-top: 15px; flex-wrap: wrap; font-size: 0.9rem; }
-        input[type=range] { accent-color: #2563eb; }
-        ul { padding-left: 20px; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Monografía I: Curvas Paramétricas</h1>
-        
-        <h2>1. Definición y Concepto</h2>
-        <p>En geometría analítica, una curva paramétrica es una representación donde las coordenadas de los puntos no se definen mediante una relación directa entre $x$ e $y$, sino como funciones de una variable independiente común $t$, denominada parámetro.</p>
-        
-        <h2>2. Representación Matemática</h2>
-        <p>Para una curva en el plano bidimensional, la definición formal es:</p>
-        <div class="math-box">
-            $$ \vec{r}(t) = \langle x(t), y(t) \rangle, \quad t \in [a, b] $$
-        </div>
+# Monografía Técnica: Curvas Paramétricas
+**Autor:** Anaya Estrada Jafet Antony  
+**Categoría:** Geometría Computacional / Gráficos por Computadora
 
-        <h2>3. Aplicaciones</h2>
-        <ul>
-            <li><strong>Animación:</strong> Definición de trayectorias de cámaras y personajes.</li>
-            <li><strong>Ingeniería:</strong> Diseño de perfiles aerodinámicos (CAD).</li>
-            <li><strong>Tipografía:</strong> Fuentes vectoriales escalables.</li>
-        </ul>
+---
 
-        <div class="lab">
-            <strong>Laboratorio Interactivo: Epitrocoide</strong>
-            <canvas id="canvasLab"></canvas>
-            <div class="controls">
-                <label>Radio R: <input type="range" id="pR" min="20" max="100" value="60"></label>
-                <label>Radio r: <input type="range" id="pr" min="5" max="50" value="20"></label>
-                <label>Distancia d: <input type="range" id="pd" min="10" max="100" value="40"></label>
-            </div>
-        </div>
-    </div>
+## 1. Introducción
+En el diseño asistido por computadora (CAD) y la animación, la representación de formas no puede limitarse a funciones matemáticas simples de tipo $y = f(x)$. Las **Curvas Paramétricas** permiten definir trayectorias complejas en el espacio mediante el uso de un parámetro independiente, permitiendo que una curva se cruce a sí misma o forme trayectorias cerradas, algo imposible con funciones explícitas.
 
-    <script>
-        const canvas = document.getElementById('canvasLab');
-        const ctx = canvas.getContext('2d');
-        let R = 60, r = 20, d = 40, t = 0;
-        let points = [];
+## 2. Definición Matemática
+Una curva paramétrica en el plano se define como un par de funciones que dependen de una variable $t$ (el parámetro), la cual usualmente representa el tiempo o el progreso a lo largo del trazo:
 
-        function draw() {
-            canvas.width = canvas.offsetWidth;
-            canvas.height = 350;
-            const cx = canvas.width / 2, cy = 175;
+$$
+x = f(t) \\
+y = g(t)
+$$
 
-            ctx.fillStyle = '#000';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+Donde $t$ se encuentra en un intervalo $[a, b]$. El vector de posición de la curva en cualquier instante es $\vec{r}(t) = (x(t), y(t))$.
 
-            let x = (R + r) * Math.cos(t) - d * Math.cos(((R + r)/r) * t);
-            let y = (R + r) * Math.sin(t) - d * Math.sin(((R + r)/r) * t);
-            
-            points.push({x, y});
-            if(points.length > 800) points.shift();
+## 3. Tipos Relevantes de Curvas
+### 3.1 Curvas de Bézier
+Son la base del diseño vectorial. Se definen mediante puntos de control que determinan la curvatura sin que la línea tenga que pasar necesariamente por todos ellos. Se basan en los **Polinomios de Bernstein**.
 
-            ctx.beginPath();
-            ctx.strokeStyle = '#3b82f6';
-            ctx.lineWidth = 2;
-            points.forEach((p, i) => i === 0 ? ctx.moveTo(cx + p.x, cy + p.y) : ctx.lineTo(cx + p.x, cy + p.y));
-            ctx.stroke();
 
-            t += 0.05;
-            requestAnimationFrame(draw);
-        }
 
-        document.querySelectorAll('input[type=range]').forEach(input => {
-            input.addEventListener('input', (e) => {
-                if(e.target.id === 'pR') R = parseFloat(e.target.value);
-                if(e.target.id === 'pr') r = parseFloat(e.target.value);
-                if(e.target.id === 'pd') d = parseFloat(e.target.value);
-                points = [];
-            });
-        });
+### 3.2 Curvas Cíclicas (Epitrocoides)
+Se generan por un punto vinculado a un círculo que rueda alrededor de otro. Sus ecuaciones son fundamentales para entender el movimiento mecánico coordinado.
 
-        draw();
-    </script>
-</body>
-</html>
+## 4. Propiedades de Continuidad
+Para que dos curvas se unan de forma "suave" en un modelo digital, se evalúan tres niveles de continuidad:
+- **C0:** Las curvas simplemente se tocan en un punto.
+- **C1:** Las tangentes en el punto de unión son iguales (suavidad visual).
+- **G2 (Geométrica):** La curvatura coincide, eliminando saltos visuales en los reflejos de luz.
+
+## 5. Aplicaciones Industriales
+1. **Tipografía:** Las fuentes (TrueType, PostScript) usan curvas de Bézier para escalar sin pixelarse.
+2. **Robótica:** Definición de trayectorias suaves para brazos mecánicos.
+3. **Ingeniería Aeronáutica:** Diseño de perfiles de alas mediante curvas NURBS.
+
+---
