@@ -1,40 +1,75 @@
-# Monografía Técnica: Curvas Paramétricas
-**Autor:** Anaya Estrada Jafet Antony  
-**Categoría:** Geometría Computacional / Gráficos por Computadora
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geometría Paramétrica | Documentación Técnica</title>
+    <style>
+        :root {
+            --bg: #0a0c10;
+            --surface: #161b22;
+            --accent: #58a6ff;
+            --text: #c9d1d9;
+            --border: #30363d;
+        }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); color: var(--text); margin: 0; line-height: 1.6; }
+        header { background: linear-gradient(135deg, #1f6feb, #111); padding: 60px 20px; text-align: center; border-bottom: 1px solid var(--border); }
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        section { background: var(--surface); padding: 30px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 30px; }
+        h1, h2 { color: #fff; }
+        h2 { border-left: 4px solid var(--accent); padding-left: 15px; }
+        .canvas-box { height: 450px; background: #000; border-radius: 8px; margin-top: 20px; border: 1px solid var(--accent); }
+        code { color: #ff7b72; background: rgba(110, 118, 129, 0.2); padding: 2px 5px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Curvas Paramétricas</h1>
+        <p>Representación matemática de trayectorias continuas en el espacio digital.</p>
+    </header>
+    <main class="container">
+        <section>
+            <h2>Concepto y Definición</h2>
+            <p>Una curva paramétrica es una función donde las coordenadas <code>(x, y, z)</code> dependen de un parámetro independiente <code>t</code>, usualmente en el intervalo.</p>
+            <p>A diferencia de las funciones explícitas, permiten representar formas cerradas y auto-intersecciones, fundamentales en el diseño 3D y la tipografía digital.</p>
+        </section>
 
----
+        <section>
+            <h2>Simulación: Curva de Bézier Cúbica</h2>
+            <p>Debajo se muestra una curva generada por 4 puntos de control. Los puntos intermedios (naranja) se animan para demostrar cómo la curva se adapta dinámicamente.</p>
+            <div id="curva3d" class="canvas-box"></div>
+        </section>
+    </main>
 
-## 1. Introducción
-En el diseño asistido por computadora (CAD) y la animación, la representación de formas no puede limitarse a funciones matemáticas simples de tipo $y = f(x)$. Las **Curvas Paramétricas** permiten definir trayectorias complejas en el espacio mediante el uso de un parámetro independiente, permitiendo que una curva se cruce a sí misma o forme trayectorias cerradas, algo imposible con funciones explícitas.
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const cont = document.getElementById('curva3d');
+        const scene = new THREE.Scene();
+        const cam = new THREE.PerspectiveCamera(50, cont.clientWidth/cont.clientHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(cont.clientWidth, cont.clientHeight);
+        cont.appendChild(renderer.domElement);
 
-## 2. Definición Matemática
-Una curva paramétrica en el plano se define como un par de funciones que dependen de una variable $t$ (el parámetro), la cual usualmente representa el tiempo o el progreso a lo largo del trazo:
+        const curveGeo = new THREE.BufferGeometry();
+        const line = new THREE.Line(curveGeo, new THREE.LineBasicMaterial({ color: 0x58a6ff, linewidth: 2 }));
+        scene.add(line);
 
-$$
-x = f(t) \\
-y = g(t)
-$$
+        cam.position.z = 10;
 
-Donde $t$ se encuentra en un intervalo $[a, b]$. El vector de posición de la curva en cualquier instante es $\vec{r}(t) = (x(t), y(t))$.
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = Date.now() * 0.002;
+            const p0 = new THREE.Vector3(-4, 0, 0);
+            const p1 = new THREE.Vector3(-2, Math.sin(time)*3, Math.cos(time)*2);
+            const p2 = new THREE.Vector3(2, Math.cos(time)*3, Math.sin(time)*2);
+            const p3 = new THREE.Vector3(4, 0, 0);
 
-## 3. Tipos Relevantes de Curvas
-### 3.1 Curvas de Bézier
-Son la base del diseño vectorial. Se definen mediante puntos de control que determinan la curvatura sin que la línea tenga que pasar necesariamente por todos ellos. Se basan en los **Polinomios de Bernstein**.
-
-
-
-### 3.2 Curvas Cíclicas (Epitrocoides)
-Se generan por un punto vinculado a un círculo que rueda alrededor de otro. Sus ecuaciones son fundamentales para entender el movimiento mecánico coordinado.
-
-## 4. Propiedades de Continuidad
-Para que dos curvas se unan de forma "suave" en un modelo digital, se evalúan tres niveles de continuidad:
-- **C0:** Las curvas simplemente se tocan en un punto.
-- **C1:** Las tangentes en el punto de unión son iguales (suavidad visual).
-- **G2 (Geométrica):** La curvatura coincide, eliminando saltos visuales en los reflejos de luz.
-
-## 5. Aplicaciones Industriales
-1. **Tipografía:** Las fuentes (TrueType, PostScript) usan curvas de Bézier para escalar sin pixelarse.
-2. **Robótica:** Definición de trayectorias suaves para brazos mecánicos.
-3. **Ingeniería Aeronáutica:** Diseño de perfiles de alas mediante curvas NURBS.
-
----
+            const curve = new THREE.CubicBezierCurve3(p0, p1, p2, p3);
+            curveGeo.setFromPoints(curve.getPoints(50));
+            scene.rotation.y += 0.01;
+            renderer.render(scene, cam);
+        }
+        animate();
+    </script>
+</body>
+</html>
