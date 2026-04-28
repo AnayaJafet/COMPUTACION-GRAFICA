@@ -6,90 +6,211 @@
   <title>Investigación: Mallas Poligonales</title>
   <style>
     :root {
-      --bg: #f0f2f5;
+      --bg: #f8fafc;
       --surface: #ffffff;
-      --text: #2d3748;
-      --accent: #38a169;
+      --text: #1e293b;
+      --accent: #2f855a; /* Verde bosque más profundo */
+      --accent-light: #48bb78;
       --border: #e2e8f0;
-      --shadow: 0 4px 20px rgba(0,0,0,0.1);
+      --shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
     }
+
     * { box-sizing: border-box; }
-    body { margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
-    header { background: #2d3748; color: white; padding: 60px 24px; text-align: center; }
-    .wrap { max-width: 1000px; margin: 0 auto; padding: 20px; }
-    section { background: var(--surface); border-radius: 18px; padding: 45px; margin-bottom: 30px; box-shadow: var(--shadow); border: 1px solid var(--border); }
-    h2 { color: var(--accent); border-bottom: 2px solid var(--border); padding-bottom: 10px; font-size: 1.8rem; }
-    .tech-box { background: #f0fff4; border-left: 4px solid var(--accent); padding: 20px; margin: 25px 0; }
-    .canvas-3d { height: 500px; background: #000; border-radius: 15px; margin: 25px 0; border: 2px solid var(--accent); }
-    .conclusion { border-left: 6px solid var(--accent); background: #f0fff4; padding: 25px; border-radius: 0 10px 10px 0; margin-top: 40px; }
+    body { 
+      margin: 0; 
+      font-family: 'Inter', -apple-system, sans-serif; 
+      background: var(--bg); 
+      color: var(--text); 
+      line-height: 1.6; 
+    }
+
+    header { 
+      background: #1a202c; 
+      color: white; 
+      padding: 80px 24px; 
+      text-align: center;
+      background-image: radial-gradient(circle at 2px 2px, #2d3748 1px, transparent 0);
+      background-size: 40px 40px;
+    }
+
+    .wrap { max-width: 900px; margin: 0 auto; padding: 20px; }
+
+    section { 
+      background: var(--surface); 
+      border-radius: 24px; 
+      padding: 45px; 
+      margin-top: -60px; 
+      box-shadow: var(--shadow); 
+      border: 1px solid var(--border); 
+    }
+
+    h2 { 
+      color: var(--accent); 
+      font-size: 2rem; 
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .tech-box { 
+      background: #f0fff4; 
+      border-left: 5px solid var(--accent-light); 
+      padding: 25px; 
+      margin: 30px 0; 
+      border-radius: 8px;
+    }
+
+    .canvas-3d { 
+      height: 550px; 
+      background: #0f172a; 
+      border-radius: 20px; 
+      margin: 30px 0; 
+      position: relative;
+      cursor: grab;
+      overflow: hidden;
+      box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
+    }
+
+    .canvas-label {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      color: white;
+      background: rgba(0,0,0,0.4);
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      pointer-events: none;
+    }
+
+    .conclusion { 
+      background: linear-gradient(to right, #f0fff4, var(--surface));
+      border-left: 6px solid var(--accent); 
+      padding: 30px; 
+      border-radius: 12px; 
+      margin-top: 40px; 
+    }
+
+    code { background: #edf2f7; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
   </style>
 </head>
 <body>
+
   <header>
-    <h1>Investigación: Mallas Poligonales</h1>
-    <p>Representación discreta y topología de objetos tridimensionales</p>
+    <h1>Mallas Poligonales</h1>
+    <p>Topología, optimización y representación tridimensional</p>
   </header>
 
   <main class="wrap">
     <section>
       <h2>1. Estructura y Discretización</h2>
       <p>
-        Una malla poligonal es una aproximación finita de una superficie continua. Se compone de tres elementos básicos: <strong>Vértices</strong> (puntos en el espacio), <strong>Aristas</strong> (líneas de conexión) y <strong>Caras</strong> (superficies planas que suelen ser triángulos o cuadriláteros).
+        Una malla poligonal es una aproximación de una superficie continua. Se define mediante el conjunto $M = (V, E, F)$ donde:
       </p>
+      <ul>
+        <li><strong>Vértices (V):</strong> Coordenadas $(x, y, z)$.</li>
+        <li><strong>Aristas (E):</strong> Conexiones entre vértices.</li>
+        <li><strong>Caras (F):</strong> Polígonos cerrados que forman la "piel".</li>
+      </ul>
 
       <div class="tech-box">
-        <strong>Estructura Half-Edge:</strong> Para el procesamiento avanzado, se utiliza esta estructura de datos que permite navegar entre polígonos vecinos en tiempo constante O(1), facilitando algoritmos de subdivisión y suavizado.
+        <strong>Estructura Half-Edge:</strong> A diferencia de una lista simple de caras, <em>Half-Edge</em> almacena aristas dirigidas. Esto permite encontrar el "vecino de al lado" de cualquier cara instantáneamente, siendo esencial para algoritmos de deformación en tiempo real.
       </div>
 
       <h3>1.1 Característica de Euler-Poincaré</h3>
       <p>
-        La coherencia topológica de una malla se valida mediante la relación V - A + C = χ. Para una malla sólida cerrada sin túneles, este valor debe ser igual a 2. Cualquier desviación indica la presencia de "agujeros" o géneros topológicos complejos.
+        Para validar si una malla es "manifold" (cerrada y coherente), aplicamos la fórmula topológica:
       </p>
+      <div style="text-align: center; font-size: 1.5rem; margin: 20px 0; color: var(--accent);">
+        $V - E + F = \chi$
+      </div>
 
-      <h3>1.2 Optimización mediante QEM</h3>
-      <p>
-        El algoritmo de <em>Quadric Error Metrics</em> es el estándar para simplificar mallas. Permite reducir el conteo de polígonos (LOD) minimizando la pérdida de silueta original, algo crítico para el rendimiento en videojuegos modernos.
-      </p>
-
-      <h3>Visualización Topológica: Wireframe 3D</h3>
-      <div class="canvas-3d" id="visorMalla"></div>
+      <h3>Visualización Interactiva</h3>
+      <div class="canvas-3d" id="visorMalla">
+        <div class="canvas-label">Usa el mouse para rotar y zoom</div>
+      </div>
 
       <div class="conclusion">
-        <h3>Conclusión </h3>
+        <h3>Conclusión</h3>
         <p>
-          El estudio de las mallas poligonales concluye que son la pieza clave para el renderizado en tiempo real. Su eficiencia depende del equilibrio entre la <strong>densidad de polígonos</strong> y la <strong>calidad de su topología</strong>. Una malla bien optimizada garantiza deformaciones coherentes en animación y una visualización fluida, siendo el pilar de la industria de la realidad virtual y los motores de juegos actuales.
+          La eficiencia de una malla no reside solo en su cantidad de polígonos, sino en su <strong>flujo topológico</strong>. Una buena malla permite un renderizado óptimo y evita artefactos visuales en las sombras (sombreado de Phong) y en la animación de personajes.
         </p>
       </div>
 
-      <div style="font-size: 0.85rem; color: #718096; margin-top: 30px;">
+      <div style="font-size: 0.85rem; color: #718096; margin-top: 40px; border-top: 1px solid var(--border); pt: 20px;">
         <strong>Referencias:</strong><br>
-        • Botsch, M., et al. (2010). <em>Polygon Mesh Processing</em>. CRC Press.<br>
-        • Akenine-Möller, T. (2018). <em>Real-Time Rendering</em>. AK Peters.
+        • Botsch, M. (2010). <em>Polygon Mesh Processing</em>. CRC Press.<br>
+        • Akenine-Möller, T. (2018). <em>Real-Time Rendering</em>.
       </div>
     </section>
   </main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
   <script>
     const box = document.getElementById('visorMalla');
     const scene = new THREE.Scene();
+    
     const camera = new THREE.PerspectiveCamera(45, box.clientWidth/box.clientHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    camera.position.set(5, 3, 7);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(box.clientWidth, box.clientHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
     box.appendChild(renderer.domElement);
 
-    camera.position.z = 8;
-    const geo = new THREE.TorusKnotGeometry(2, 0.6, 120, 20);
-    const mat = new THREE.MeshBasicMaterial({ color: 0x38a169, wireframe: true, transparent: true, opacity: 0.5 });
-    const mesh = new THREE.Mesh(geo, mat);
-    scene.add(mesh);
+    // Iluminación
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    scene.add(ambientLight);
+    const pointLight = new THREE.PointLight(0x48bb78, 1.2);
+    pointLight.position.set(10, 10, 10);
+    scene.add(pointLight);
+
+    // Controles
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+
+    // Crear Malla Doble (Sólido + Wireframe)
+    const geo = new THREE.TorusKnotGeometry(1.8, 0.6, 150, 20);
+    
+    // Material sólido con sombreado plano para ver los polígonos
+    const matSolid = new THREE.MeshPhongMaterial({ 
+      color: 0x1a202c, 
+      flatShading: true, 
+      shininess: 80 
+    });
+    const meshSolid = new THREE.Mesh(geo, matSolid);
+    
+    // Material wireframe (la malla)
+    const matWire = new THREE.MeshBasicMaterial({ 
+      color: 0x48bb78, 
+      wireframe: true, 
+      transparent: true, 
+      opacity: 0.3 
+    });
+    const meshWire = new THREE.Mesh(geo, matWire);
+    
+    const group = new THREE.Group();
+    group.add(meshSolid);
+    group.add(meshWire);
+    scene.add(group);
 
     function animate() {
       requestAnimationFrame(animate);
-      mesh.rotation.y += 0.005;
-      mesh.rotation.x += 0.005;
+      group.rotation.y += 0.003;
+      controls.update();
       renderer.render(scene, camera);
     }
+
+    // Ajuste responsivo
+    window.addEventListener('resize', () => {
+      camera.aspect = box.clientWidth / box.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(box.clientWidth, box.clientHeight);
+    });
+
     animate();
   </script>
 </body>
