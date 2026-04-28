@@ -1,99 +1,106 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Curvas Paramétricas | Documentación Técnica</title>
-  <style>
-    :root {
-      --bg: #0d1117;
-      --surface: #161b22;
-      --text: #c9d1d9;
-      --accent: #58a6ff;
-      --border: #30363d;
-      --math: #79c0ff;
-    }
-    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
-    header { background: #010409; padding: 60px 24px; border-bottom: 1px solid var(--border); text-align: center; }
-    .wrap { max-width: 900px; margin: 0 auto; padding: 20px; }
-    section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 30px; margin: 20px 0; }
-    h1 { color: #fff; font-size: 2.5rem; margin-bottom: 10px; }
-    h2 { color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-    .math { background: #000; padding: 15px; border-radius: 8px; font-family: "Courier New", monospace; color: var(--math); text-align: center; margin: 20px 0; }
-    .canvas-container { height: 450px; background: #000; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; position: relative; }
-    .label-3d { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.7); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; border: 1px solid var(--accent); }
-    ul { padding-left: 20px; }
-    li { margin-bottom: 10px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monografía: Curvas Paramétricas - Jafet Anaya</title>
+    <style>
+        :root {
+            --bg: #0d1117; --surface: #161b22; --border: #30363d;
+            --text: #c9d1d9; --accent: #58a6ff; --math: #79c0ff;
+        }
+        body { margin: 0; font-family: -apple-system, system-ui, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; }
+        header { background: #010409; padding: 80px 20px; border-bottom: 1px solid var(--border); text-align: center; }
+        .wrap { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 40px; margin-bottom: 30px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+        h1 { font-size: 2.5rem; color: #fff; margin: 0; }
+        h2 { font-size: 1.8rem; color: var(--accent); border-bottom: 2px solid var(--border); padding-bottom: 10px; margin-top: 0; }
+        .math-box { background: #000; padding: 20px; border-radius: 8px; font-family: "SFMono-Regular", Consolas, monospace; color: var(--math); text-align: center; margin: 25px 0; border: 1px dashed var(--border); }
+        .canvas-3d { height: 450px; background: #000; border-radius: 12px; margin: 25px 0; position: relative; border: 1px solid var(--accent); overflow: hidden; }
+        .footer-note { font-size: 0.85rem; color: #8b949e; border-top: 1px solid var(--border); padding-top: 20px; }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Curvas Paramétricas</h1>
-    <p>Modelado geométrico continuo en espacios digitales</p>
-  </header>
-  
-  <main class="wrap">
+
+<header>
+    <h1>Monografía: Curvas Paramétricas</h1>
+    <p style="color: #8b949e;">Investigación sobre Modelado Continuo en Computación Gráfica</p>
+</header>
+
+<main class="wrap">
     <section>
-      <h2>Fundamentos Matemáticos</h2>
-      <p>A diferencia de las funciones tradicionales y = f(x), las curvas paramétricas definen las coordenadas como funciones de una variable independiente <em>t</em>. Esto permite que una curva regrese sobre sí misma o forme lazos.</p>
-      <div class="math">
-        P(t) = ( x(t), y(t), z(t) ) <br>
-        t ∈
-      </div>
-      <p>En computación gráfica, esto es vital para la <strong>continuidad</strong>. Al variar <em>t</em> suavemente, obtenemos una trayectoria fluida, ideal para fuentes de texto (tipografía) y diseño industrial.</p>
+        <h2>1. Introducción y Concepto</h2>
+        <p>
+            En la geometría computacional, las <strong>curvas paramétricas</strong> representan una evolución del concepto de función explícita. Mientras que una función estándar vincula <em>y</em> directamente con <em>x</em>, una representación paramétrica define cada coordenada como una función de una variable independiente <em>t</em> (el parámetro).
+        </p>
+        <div class="math-box">
+            P(t) = [ x(t), y(t), z(t) ] <br>
+            t ∈ [a, b]
+        </div>
+        <p>
+            Esta separación permite modelar trayectorias complejas, como curvas que regresan sobre sí mismas o figuras tridimensionales, algo fundamental en el diseño asistido por computadora (CAD) y la animación digital.
+        </p>
     </section>
 
     <section>
-      <h2>Visualización: Curva de Bézier Cúbica</h2>
-      <p>Las curvas de Bézier usan puntos de control para "tirar" de la curva sin que esta necesariamente pase por ellos. Abajo, los puntos naranja se mueven para demostrar la flexibilidad del modelo.</p>
-      <div class="canvas-container">
-        <div class="label-3d">Simulación en Tiempo Real (Three.js)</div>
-        <div id="canvasCurva" style="width:100%; height:100%;"></div>
-      </div>
+        <h2>2. Tipología y Bases Matemáticas</h2>
+        <p>Existen diversas familias de curvas, cada una optimizada para propósitos específicos:</p>
+        <ul>
+            <li><strong>Curvas de Bézier:</strong> Basadas en los <em>Polinomios de Bernstein</em>. Son intuitivas para diseñadores, ya que la curva es "atraída" por puntos de control.</li>
+            <li><strong>B-Splines:</strong> Introducen control local; mover un punto no deforma la curva completa.</li>
+            <li><strong>NURBS:</strong> (Non-Uniform Rational B-Splines). Permiten representar secciones cónicas (círculos, elipses) con precisión matemática absoluta.</li>
+        </ul>
+
+        <h3>Demostración Interactiva: Curva de Bézier Cúbica</h3>
+        <div class="canvas-3d" id="viewportCurva"></div>
     </section>
 
     <section>
-      <h2>Aplicaciones Clave</h2>
-      <ul>
-        <li><strong>NURBS:</strong> El estándar en ingeniería (CAD) para representar círculos y elipses de forma exacta.</li>
-        <li><strong>Interpolación:</strong> Para suavizar el movimiento de cámaras en videojuegos.</li>
-        <li><strong>Fuentes:</strong> Formatos como .OTF o .TTF usan estas curvas para escalar letras sin perder calidad.</li>
-      </ul>
+        <h2>3. Conclusiones</h2>
+        <p>
+            Las curvas paramétricas son el puente entre la abstracción matemática y la visualización digital. Su valor reside en la <strong>continuidad</strong> y la capacidad de escalado sin pérdida de resolución, siendo el estándar en tipografías y modelado industrial.
+        </p>
+        <div class="footer-note">
+            <strong>Bibliografía:</strong> <br>
+            • Piegl, L., & Tiller, W. (1997). <em>The NURBS Book</em>. <br>
+            • Matusik, W. MIT 6.837: Computer Graphics.
+        </div>
     </section>
-  </main>
+</main>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script>
-    const cont = document.getElementById('canvasCurva');
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+    const el = document.getElementById('viewportCurva');
     const scene = new THREE.Scene();
-    const cam = new THREE.PerspectiveCamera(45, cont.clientWidth / cont.clientHeight, 0.1, 1000);
+    const cam = new THREE.PerspectiveCamera(50, el.clientWidth/el.clientHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(cont.clientWidth, cont.clientHeight);
-    cont.appendChild(renderer.domElement);
+    renderer.setSize(el.clientWidth, el.clientHeight);
+    el.appendChild(renderer.domElement);
 
-    scene.add(new THREE.GridHelper(10, 10, 0x333333, 0x222222));
-    cam.position.set(5, 5, 10);
+    const grid = new THREE.GridHelper(10, 10, 0x30363d, 0x30363d);
+    scene.add(grid);
+
+    const geo = new THREE.BufferGeometry();
+    const line = new THREE.Line(geo, new THREE.LineBasicMaterial({ color: 0x58a6ff, linewidth: 2 }));
+    scene.add(line);
+
+    cam.position.set(5, 5, 8);
     cam.lookAt(0, 0, 0);
 
-    const matCurva = new THREE.LineBasicMaterial({ color: 0x58a6ff, linewidth: 2 });
-    const geomCurva = new THREE.BufferGeometry();
-    const linea = new THREE.Line(geomCurva, matCurva);
-    scene.add(linea);
-
     function animate() {
-      requestAnimationFrame(animate);
-      const t = Date.now() * 0.001;
-      const p0 = new THREE.Vector3(-4, 0, 0);
-      const p1 = new THREE.Vector3(-2, Math.sin(t)*3, Math.cos(t)*2);
-      const p2 = new THREE.Vector3(2, Math.cos(t)*3, Math.sin(t)*2);
-      const p3 = new THREE.Vector3(4, 0, 0);
-
-      const curve = new THREE.CubicBezierCurve3(p0, p1, p2, p3);
-      geomCurva.setFromPoints(curve.getPoints(50));
-      scene.rotation.y += 0.005;
-      renderer.render(scene, cam);
+        requestAnimationFrame(animate);
+        const t = Date.now() * 0.001;
+        const p0 = new THREE.Vector3(-4, 0, 0);
+        const p1 = new THREE.Vector3(-1, Math.sin(t)*3, Math.cos(t)*2);
+        const p2 = new THREE.Vector3(1, Math.cos(t)*3, Math.sin(t)*2);
+        const p3 = new THREE.Vector3(4, 0, 0);
+        
+        const curve = new THREE.CubicBezierCurve3(p0, p1, p2, p3);
+        geo.setFromPoints(curve.getPoints(50));
+        scene.rotation.y += 0.005;
+        renderer.render(scene, cam);
     }
     animate();
-  </script>
+</script>
 </body>
 </html>
