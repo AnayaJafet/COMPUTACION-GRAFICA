@@ -9,15 +9,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <style>
+        /* ===== VARIABLES DE DISEÑO ===== */
         :root {
             --primary: #38bdf8; /* Azul claro / Cyan */
             --secondary: #818cf8; /* Índigo */
-            --accent: #f472b6; /* Rosa neón para destacar */
+            --accent: #f472b6; /* Rosa neón */
             --bg-base: #020617; /* Fondo ultra oscuro */
-            --card-bg: rgba(30, 41, 59, 0.6); /* Glassmorphism oscuro */
+            --card-bg: rgba(30, 41, 59, 0.7); /* Glassmorphism oscuro */
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --border-color: rgba(255, 255, 255, 0.1);
+            --border-color: rgba(56, 189, 248, 0.2);
         }
 
         * {
@@ -35,7 +36,7 @@
             overflow-x: hidden;
         }
 
-        /* Canvas Background */
+        /* ===== CANVAS BACKGROUND ===== */
         #bg-canvas {
             position: fixed;
             top: 0;
@@ -46,53 +47,67 @@
             pointer-events: none;
         }
 
-        header {
-            padding: 100px 20px 80px;
+        /* ===== PORTADA (HERO SECTION) ===== */
+        .portada {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            position: relative;
+            padding: 20px;
+            animation: fadeIn 1.5s ease;
         }
 
-        header h1 {
-            font-size: 4rem;
+        .portada h1 {
+            font-size: 4.5rem;
             font-weight: 800;
             background: linear-gradient(135deg, var(--text-main) 0%, var(--primary) 50%, var(--secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: -1px;
-            margin-bottom: 10px;
-            filter: drop-shadow(0 4px 10px rgba(56, 189, 248, 0.2));
+            margin-bottom: 15px;
+            filter: drop-shadow(0 4px 15px rgba(56, 189, 248, 0.3));
         }
 
-        header p {
-            font-size: 1.2rem;
+        .portada p {
+            font-size: 1.5rem;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             font-weight: 600;
+            margin-bottom: 40px;
         }
 
-        .university-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+        .boton-portada {
+            padding: 15px 40px;
             background: rgba(56, 189, 248, 0.1);
-            border: 1px solid rgba(56, 189, 248, 0.3);
             color: var(--primary);
-            padding: 8px 20px;
+            border: 1px solid var(--primary);
+            text-decoration: none;
             border-radius: 30px;
-            font-size: 0.9rem;
-            margin-top: 20px;
-            font-weight: 600;
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
+            font-weight: 800;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+            backdrop-filter: blur(5px);
         }
 
+        .boton-portada:hover {
+            background: var(--primary);
+            color: var(--bg-base);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.5);
+        }
+
+        /* ===== CONTENEDOR PRINCIPAL ===== */
         .container {
             width: 90%;
-            max-width: 1100px;
-            margin: 0 auto 60px;
+            max-width: 1000px;
+            margin: 0 auto 80px;
             display: flex;
             flex-direction: column;
-            gap: 40px;
+            gap: 30px;
         }
 
         section {
@@ -100,31 +115,24 @@
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             padding: 40px;
-            border-radius: 24px;
+            border-radius: 20px;
             border: 1px solid var(--border-color);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             transition: transform 0.3s ease, border-color 0.3s ease;
-            opacity: 0; 
-            transform: translateY(20px);
-            animation: fadeUp 0.8s forwards;
         }
-
-        /* Retrasos para la animación en cascada */
-        section:nth-child(1) { animation-delay: 0.1s; }
-        section:nth-child(2) { animation-delay: 0.2s; }
-        section:nth-child(3) { animation-delay: 0.3s; }
-        section:nth-child(4) { animation-delay: 0.4s; }
-        section:nth-child(5) { animation-delay: 0.5s; }
-        section:nth-child(6) { animation-delay: 0.6s; } /* Agregado para tu nueva sección */
 
         section:hover {
             transform: translateY(-5px);
-            border-color: rgba(129, 140, 248, 0.4);
+            border-color: var(--secondary);
         }
 
         .section-highlight {
             border: 1px solid var(--accent);
-            box-shadow: 0 0 30px rgba(244, 114, 182, 0.1);
+            box-shadow: 0 0 30px rgba(244, 114, 182, 0.15);
+        }
+
+        .section-highlight:hover {
+            border-color: var(--accent);
         }
 
         h2 {
@@ -135,24 +143,84 @@
             font-size: 1.6rem;
             margin-bottom: 25px;
             padding-bottom: 15px;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        h2 i {
-            color: var(--primary);
-            font-size: 1.4rem;
+        h2 i { color: var(--primary); font-size: 1.4rem; }
+        .section-highlight h2 i { color: var(--accent); }
+
+        /* ===== LISTA DE PROYECTOS ===== */
+        .lista {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        .info {
-            font-size: 1.1rem;
-            color: var(--text-muted);
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 15px 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
         }
 
-        .info strong {
-            color: var(--text-main);
+        .item:hover {
+            background: rgba(56, 189, 248, 0.05);
+            border-color: var(--primary);
+            transform: translateX(8px);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
+        }
+
+        .item span {
             font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
+        .item span i { color: var(--secondary); }
+        .section-highlight .item span i { color: var(--accent); }
+
+        /* ===== BOTONES DE ACCIÓN ===== */
+        .boton {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 8px 22px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            transition: 0.3s;
+            letter-spacing: 1px;
+        }
+
+        .boton:hover {
+            background: var(--primary);
+            color: var(--bg-base);
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        .boton-accent {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+        
+        .boton-accent:hover {
+            background: var(--accent);
+            color: var(--bg-base);
+            box-shadow: 0 0 15px var(--accent);
+        }
+
+        /* ===== PERFIL & ETIQUETAS ===== */
+        .info { font-size: 1.1rem; color: var(--text-muted); }
+        .info strong { color: var(--text-main); font-weight: 600; }
+        
         .skills-container {
             display: flex;
             flex-wrap: wrap;
@@ -162,11 +230,10 @@
 
         .skill-tag {
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 6px 15px;
             border-radius: 8px;
             font-size: 0.85rem;
-            color: var(--text-main);
             display: flex;
             align-items: center;
             gap: 6px;
@@ -174,61 +241,23 @@
 
         .skill-tag i { color: var(--primary); }
 
-        .links {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 15px;
-        }
-
-        .links a {
-            display: flex;
-            align-items: center;
-            padding: 20px;
-            background: rgba(15, 23, 42, 0.6);
-            color: var(--text-muted);
-            text-decoration: none;
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-            font-weight: 600;
-            gap: 15px;
-        }
-
-        .links a i {
-            font-size: 1.4rem;
-            color: var(--secondary);
-            transition: transform 0.3s ease, color 0.3s ease;
-        }
-
-        .links a:hover {
-            background: var(--primary);
-            color: var(--bg-base);
-            border-color: var(--primary);
-            transform: scale(1.02);
-            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.2);
-        }
-
-        .links a:hover i {
-            color: var(--bg-base);
-            transform: translateX(5px);
-        }
-
         footer {
             text-align: center;
             padding: 40px 20px;
-            border-top: 1px solid var(--border-color);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             color: var(--text-muted);
-            font-size: 0.95rem;
             background: rgba(2, 6, 23, 0.8);
         }
 
-        @keyframes fadeUp {
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         @media (max-width: 768px) {
-            header h1 { font-size: 2.8rem; }
-            section { padding: 30px 20px; }
+            .portada h1 { font-size: 3rem; }
+            .item { flex-direction: column; gap: 15px; text-align: center; }
+            .boton { width: 100%; text-align: center; }
         }
     </style>
 </head>
@@ -236,15 +265,16 @@
 
 <canvas id="bg-canvas"></canvas>
 
-<header>
+<section class="portada">
     <h1>Jafet Anaya Estrada</h1>
     <p>Ingeniería de Sistemas</p>
-    <div>
-        <span class="university-badge"><i class="fa-solid fa-graduation-cap"></i> UTEA Cusco • Computación Gráfica</span>
+    <div style="margin-bottom: 40px; color: var(--text-muted);">
+        <i class="fa-solid fa-graduation-cap"></i> UTEA Cusco • Computación Gráfica
     </div>
-</header>
+    <a href="#contenido" class="boton-portada">Explorar Portafolio <i class="fa-solid fa-arrow-down" style="margin-left: 8px;"></i></a>
+</section>
 
-<div class="container">
+<div id="contenido" class="container">
     
     <section>
         <h2><i class="fa-solid fa-user-astronaut"></i> Perfil Profesional</h2>
@@ -258,51 +288,108 @@
             <span class="skill-tag"><i class="fa-brands fa-js"></i> JavaScript ES6</span>
             <span class="skill-tag"><i class="fa-solid fa-cube"></i> Three.js / WebGL</span>
             <span class="skill-tag"><i class="fa-solid fa-calculator"></i> Geometría Paramétrica</span>
-            <span class="skill-tag"><i class="fa-solid fa-laptop-code"></i> Diseño de Interfaces</span>
         </div>
     </section>
 
     <section>
         <h2><i class="fa-solid fa-code"></i> Modelado 2D y Funciones</h2>
-        <div class="links">
-            <a href="CIRCULO.HTML"><i class="fa-regular fa-circle"></i> Proyecto Círculo</a>
-            <a href="CUADRADOTRIANGULO.HTML"><i class="fa-solid fa-shapes"></i> Cuadrado y Triángulo</a>
-            <a href="graficobarras.html"><i class="fa-solid fa-chart-column"></i> Gráfico de Barras</a>
-            <a href="Ejercicio_4FuncionMatematica.html"><i class="fa-solid fa-square-root-variable"></i> Función Matemática</a>
-            <a href="Ejercicio_5GraficoLineal.html"><i class="fa-solid fa-chart-line"></i> Gráfico Lineal</a>
+        <div class="lista">
+            <div class="item">
+                <span><i class="fa-regular fa-circle"></i> Proyecto Círculo</span>
+                <a href="CIRCULO.HTML" class="boton">Ejecutar</a>
+            </div>
+            <div class="item">
+                <span><i class="fa-solid fa-shapes"></i> Cuadrado y Triángulo</span>
+                <a href="CUADRADOTRIANGULO.HTML" class="boton">Ejecutar</a>
+            </div>
+            <div class="item">
+                <span><i class="fa-solid fa-chart-column"></i> Gráfico de Barras</span>
+                <a href="graficobarras.html" class="boton">Ejecutar</a>
+            </div>
+            <div class="item">
+                <span><i class="fa-solid fa-square-root-variable"></i> Función Matemática</span>
+                <a href="Ejercicio_4FuncionMatematica.html" class="boton">Ejecutar</a>
+            </div>
+            <div class="item">
+                <span><i class="fa-solid fa-chart-line"></i> Gráfico Lineal</span>
+                <a href="Ejercicio_5GraficoLineal.html" class="boton">Ejecutar</a>
+            </div>
         </div>
     </section>
 
     <section>
-        <h2><i class="fa-solid fa-bolt"></i> ACTIVIDAD NRO.4 Cinemática y Animación</h2>
-        <div class="links">
-            <a href="Actividad1.html"><i class="fa-solid fa-layer-group"></i> 1. Barras Dinámicas</a>
-            <a href="Actividad2.html"><i class="fa-solid fa-ellipsis-h"></i> 2. Puntos en Movimiento</a>
-            <a href="Actividad3.html"><i class="fa-solid fa-water"></i> 3. Curva Coseno</a>
+        <h2><i class="fa-solid fa-bolt"></i> ACTIVIDAD NRO.4: Cinemática 2D</h2>
+        <div class="lista">
+            <div class="item">
+                <span><i class="fa-solid fa-layer-group"></i> Ejercicio 1: Barras Dinámicas</span>
+                <a href="Actividad1.html" class="boton">Ejecutar</a>
+            </div>
+            <div class="item">
+                <span><i class="fa-solid fa-ellipsis-h"></i> Ejercicio 2: Puntos en Movimiento</span>
+                <a href="Actividad2.html" class="boton">Ejecutar</a>
+            </div>
+            <div class="item">
+                <span><i class="fa-solid fa-water"></i> Ejercicio 3: Curva Coseno</span>
+                <a href="Actividad3.html" class="boton">Ejecutar</a>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2><i class="fa-solid fa-cube"></i> ACTIVIDAD NRO.5: Transformaciones 3D</h2>
+        <div class="lista">
+            <div class="item">
+                <span><i class="fa-solid fa-arrows-left-right"></i> Ejercicio 1: Traslación 3D</span>
+                <a href="Actividadad5_ejercicio1.html" class="boton">Ejecutar</a>
+            </div>
+            <div class="item">
+                <span><i class="fa-solid fa-rotate"></i> Ejercicio 2: Rotación Continua</span>
+                <a href="Actividadad5_ejercicio2.html" class="boton">Ejecutar</a>
+            </div>
+            <div class="item">
+                <span><i class="fa-solid fa-gamepad"></i> Ejercicio 3: Control Interactivo</span>
+                <a href="Actividadad5_ejercicio3.html" class="boton">Ejecutar</a>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2><i class="fa-solid fa-book-open"></i> ACTIVIDAD NRO.6: Investigaciones</h2>
+        <div class="lista">
+            <div class="item">
+                <span><i class="fa-solid fa-bezier-curve"></i> Curvas Paramétricas</span>
+                <a href="CurvasParametricas.html" class="boton">Abrir</a>
+            </div>
+            <div class="item">
+                <span><i class="fa-solid fa-draw-polygon"></i> Mallas Poligonales</span>
+                <a href="MallasPoliconales.html" class="boton">Abrir</a>
+            </div>
         </div>
     </section>
 
     <section class="section-highlight">
-        <h2><i class="fa-solid fa-cube" style="color: var(--accent);"></i> ACTIVIDAD NRO.5 Transformaciones Espaciales 3D</h2>
-        <div class="links">
-            <a href="Actividadad5_ejercicio1.html"><i class="fa-solid fa-arrows-left-right"></i> 1. Traslación 3D</a>
-            <a href="Actividadad5_ejercicio2.html"><i class="fa-solid fa-rotate"></i> 2. Rotación Continua</a>
-            <a href="Actividadad5_ejercicio3.html"><i class="fa-solid fa-gamepad"></i> 3. Control Interactivo</a>
+        <h2><i class="fa-solid fa-file-contract"></i> TRABAJO DE INVESTIGACIÓN FINAL</h2>
+        <div class="lista">
+            <div class="item">
+                <span><i class="fa-solid fa-file-pdf"></i> Documento de Investigación (PDF)</span>
+                <a href="Trabajo de investigación/Investigación.html" class="boton boton-accent">Abrir PDF</a>
+            </div>
+            <div class="item">
+                <span><i class="fa-solid fa-file-powerpoint"></i> Presentación de Diapositivas (PPT)</span>
+                <a href="Trabajo de investigación/Diapositiva.html" class="boton boton-accent">Ver PPT</a>
+            </div>
+            <div class="item">
+                <span><i class="fa-solid fa-laptop-code"></i> Ejercicio Práctico del Cubo</span>
+                <a href="Trabajo de investigación/Ejercicio Cubo/index.html" class="boton boton-accent">Ejecutar Demo</a>
+            </div>
         </div>
     </section>
 
-    <section>
-        <h2><i class="fa-solid fa-book-open"></i> ACTIVIDAD NRO.6 Investigaciones</h2>
-        <div class="links">
-            <a href="CurvasParametricas.html"><i class="fa-solid fa-bezier-curve"></i> 1. Curvas Paramétricas</a>
-            <a href="MallasPoliconales.html"><i class="fa-solid fa-draw-polygon"></i> 2. Mallas Poligonales</a>
-        </div>
-    </section>
 </div>
 
 <footer>
     <p>© 2026 - Portafolio de Desarrollo y Computación Gráfica</p>
-    <p style="margin-top: 5px; color: var(--border-color);">Jafet Anaya Estrada | UTEA Cusco</p>
+    <p style="margin-top: 5px; font-weight: bold; color: var(--primary);">Jafet Anaya Estrada | UTEA Cusco</p>
 </footer>
 
 <script>
@@ -333,7 +420,6 @@
         update() {
             this.x += this.vx;
             this.y += this.vy;
-
             if (this.x < 0 || this.x > width) this.vx *= -1;
             if (this.y < 0 || this.y > height) this.vy *= -1;
         }
@@ -354,7 +440,6 @@
             p.draw();
         });
 
-        // Dibujar líneas de conexión
         for (let i = 0; i < particles.length; i++) {
             for (let j = i + 1; j < particles.length; j++) {
                 const dx = particles[i].x - particles[j].x;
