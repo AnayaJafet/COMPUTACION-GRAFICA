@@ -16,6 +16,7 @@
             --bg-base: #020617;
             --card-bg: rgba(30, 41, 59, 0.7);
             --border-color: rgba(56, 189, 248, 0.2);
+            --text-main: #f8fafc;
         }
 
         * {
@@ -56,7 +57,7 @@
             border-radius: 24px;
             border: 1px solid var(--border-color);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            padding: 20px;
+            padding: 25px;
             animation: fadeUp 0.8s forwards;
             display: flex;
             flex-direction: column;
@@ -64,18 +65,49 @@
 
         .ppt-header {
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            color: var(--text-main);
+        }
+
+        .ppt-title {
+            display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 15px;
-            color: white;
             font-weight: 600;
             font-size: 1.1rem;
         }
 
-        .ppt-header i {
+        .ppt-title i {
             color: var(--primary);
         }
 
+        /* ===== BOTÓN VOLVER ===== */
+        .btn-volver {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-volver:hover {
+            background: var(--primary);
+            color: var(--bg-base);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+            transform: translateX(-3px);
+        }
+
+        /* ===== CONTENEDOR IFRAME ===== */
         .iframe-wrapper {
             flex-grow: 1;
             border-radius: 12px;
@@ -96,94 +128,101 @@
         }
 
         @media (max-width: 768px) {
-            .ppt-container { width: 95%; height: 80vh; }
+            .ppt-container { width: 95%; height: 80vh; padding: 15px; }
+            .ppt-header { flex-direction: column; gap: 12px; align-items: flex-start; }
+            .btn-volver { width: 100%; justify-content: center; }
         }
     </style>
 </head>
 <body>
 
-<canvas id="bg-canvas"></canvas>
+    <canvas id="bg-canvas"></canvas>
 
-<div class="ppt-container">
-    <div class="ppt-header">
-        <i class="fa-solid fa-file-powerpoint"></i>
-        <span>Trabajo de Investigación | Presentación Interactiva</span>
+    <div class="ppt-container">
+        <div class="ppt-header">
+            <div class="ppt-title">
+                <i class="fa-solid fa-file-powerpoint"></i>
+                <span>Trabajo de Investigación | Presentación Interactiva</span>
+            </div>
+            <a href="../index.html" class="btn-volver">
+                <i class="fa-solid fa-arrow-left"></i> Volver al Portafolio
+            </a>
+        </div>
+        
+        <div class="iframe-wrapper">
+            <iframe 
+                src="https://canva.link/inventigacion1librerias2python3" 
+                allowfullscreen="allowfullscreen" 
+                allow="fullscreen">
+            </iframe>
+        </div>
     </div>
-    
-    <div class="iframe-wrapper">
-        <iframe 
-            src="https://canva.link/inventigacion1librerias2python3" 
-            allowfullscreen="allowfullscreen" 
-            allow="fullscreen">
-        </iframe>
-    </div>
-</div>
 
-<script>
-    const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-    let width, height, particles;
+    <script>
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles;
 
-    function init() {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-        particles = [];
-        const particleCount = window.innerWidth < 768 ? 40 : 80;
-        for (let i = 0; i < particleCount; i++) {
-            particles.push(new Particle());
-        }
-    }
-
-    class Particle {
-        constructor() {
-            this.x = Math.random() * width;
-            this.y = Math.random() * height;
-            this.vx = (Math.random() - 0.5) * 0.5;
-            this.vy = (Math.random() - 0.5) * 0.5;
-            this.radius = Math.random() * 1.5 + 0.5;
-        }
-        update() {
-            this.x += this.vx;
-            this.y += this.vy;
-            if (this.x < 0 || this.x > width) this.vx *= -1;
-            if (this.y < 0 || this.y > height) this.vy *= -1;
-        }
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(56, 189, 248, 0.5)';
-            ctx.fill();
-        }
-    }
-
-    function animate() {
-        ctx.clearRect(0, 0, width, height);
-        particles.forEach(p => {
-            p.update();
-            p.draw();
-        });
-        for (let i = 0; i < particles.length; i++) {
-            for (let j = i + 1; j < particles.length; j++) {
-                const dx = particles[i].x - particles[j].x;
-                const dy = particles[i].y - particles[j].y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance < 120) {
-                    ctx.beginPath();
-                    ctx.strokeStyle = `rgba(129, 140, 248, ${1 - distance/120})`;
-                    ctx.lineWidth = 0.5;
-                    ctx.moveTo(particles[i].x, particles[i].y);
-                    ctx.lineTo(particles[j].x, particles[j].y);
-                    ctx.stroke();
-                }
+        function init() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            particles = [];
+            const particleCount = window.innerWidth < 768 ? 40 : 80;
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
             }
         }
-        requestAnimationFrame(animate);
-    }
 
-    window.addEventListener('resize', init);
-    init();
-    animate();
-</script>
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.radius = Math.random() * 1.5 + 0.5;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(56, 189, 248, 0.5)';
+                ctx.fill();
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 120) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(129, 140, 248, ${1 - distance/120})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', init);
+        init();
+        animate();
+    </script>
 
 </body>
 </html>
