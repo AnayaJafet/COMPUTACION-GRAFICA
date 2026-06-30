@@ -65,46 +65,16 @@
 
         .ppt-header {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            color: var(--text-main);
-        }
-
-        .ppt-title {
-            display: flex;
             align-items: center;
             gap: 12px;
+            margin-bottom: 20px;
+            color: var(--text-main);
             font-weight: 600;
             font-size: 1.1rem;
         }
 
-        .ppt-title i {
+        .ppt-header i {
             color: var(--primary);
-        }
-
-        /* ===== BOTÓN VOLVER ===== */
-        .btn-volver {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-main);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 8px 16px;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-volver:hover {
-            background: var(--primary);
-            color: var(--bg-base);
-            border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
-            transform: translateX(-3px);
         }
 
         /* ===== CONTENEDOR IFRAME ===== */
@@ -129,8 +99,6 @@
 
         @media (max-width: 768px) {
             .ppt-container { width: 95%; height: 80vh; padding: 15px; }
-            .ppt-header { flex-direction: column; gap: 12px; align-items: flex-start; }
-            .btn-volver { width: 100%; justify-content: center; }
         }
     </style>
 </head>
@@ -140,18 +108,13 @@
 
     <div class="ppt-container">
         <div class="ppt-header">
-            <div class="ppt-title">
-                <i class="fa-solid fa-file-powerpoint"></i>
-                <span>Trabajo de Investigación | Presentación Interactiva</span>
-            </div>
-            <a href="../index.html" class="btn-volver">
-                <i class="fa-solid fa-arrow-left"></i> Volver al Portafolio
-            </a>
+            <i class="fa-solid fa-file-powerpoint"></i>
+            <span>Trabajo de Investigación | Presentación Interactiva</span>
         </div>
         
         <div class="iframe-wrapper">
             <iframe 
-                src="https://canva.link/inventigacion1librerias2python3" 
+                src="https://www.canva.com/design/DAHOBUZlaYI/t-IOldy8OD9iyzbj3vfs_w/view" 
                 allowfullscreen="allowfullscreen" 
                 allow="fullscreen">
             </iframe>
