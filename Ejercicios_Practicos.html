@@ -1,1 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicios Prácticos | Inteligencia Artificial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #38bdf8;
+            --secondary: #818cf8;
+            --accent: #f472b6;
+            --bg-base: #020617;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: rgba(56, 189, 248, 0.2);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 650px;
+            width: 100%;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--text-main), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        p {
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        .features {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            text-align: left;
+            margin-bottom: 35px;
+            background: rgba(15, 23, 42, 0.4);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+        .feature-item i { color: var(--accent); }
+        .buttons-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        .btn {
+            padding: 12px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s ease;
+            font-size: 0.95rem;
+        }
+        .btn-colab {
+            background: linear-gradient(135deg, #f57c00, #ffb74d);
+            color: #000;
+            box-shadow: 0 0 20px rgba(245, 124, 0, 0.3);
+        }
+        .btn-colab:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(245, 124, 0, 0.5);
+        }
+        .btn-back {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .btn-back:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
 
+    <div class="card">
+        <h1><i class="fa-solid fa-laptop-code" style="color: var(--primary); margin-right: 10px;"></i> Entorno de Prácticas</h1>
+        <p>Accede al cuaderno interactivo de Google Colab diseñado para la investigación de Computación Gráfica e Inteligencia Artificial.</p>
+        
+        <div class="features">
+            <div class="feature-item"><i class="fa-solid fa-square-check"></i> Implementación práctica de Redes Neuronales con Keras</div>
+            <div class="feature-item"><i class="fa-solid fa-square-check"></i> Tensores y flujos de trabajo dinámicos en PyTorch</div>
+            <div class="feature-item"><i class="fa-solid fa-square-check"></i> Procesamiento de Lenguaje Natural (PLN) mediante NLTK</div>
+            <div class="feature-item"><i class="fa-solid fa-square-check"></i> Ejecución inmediata en la nube sin instalaciones locales</div>
+        </div>
+
+        <div class="buttons-container">
+            <a href="index.html" class="btn btn-back"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+            <a href="https://colab.research.google.com/drive/1mcOYh95Iyv8HPwrc8cyypD5YaZ-jaGWp?usp=sharing" target="_blank" class="btn btn-colab">
+                <i class="fa-brands fa-google"></i> Abrir en Google Colab
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>
